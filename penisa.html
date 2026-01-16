@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEGIR PENISA - Процессоры</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0D0D0D;
+            --text-white: #FFFFFF;
+            --text-light: #E5E5E5;
+            --accent-primary: #FF9500;
+            --accent-secondary: #FFB347;
+            --card-bg: #1A1A1A;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-icons a {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .nav-icons a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Hero Section */
+        .product-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 5% 5%;
+            position: relative;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 50% 30%, rgba(255, 149, 0, 0.2) 0%, transparent 50%),
+                var(--bg-dark);
+        }
+        
+        .product-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .product-tagline {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+        
+        .naming-system {
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem auto 0;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .naming-system h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .naming-example {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            margin: 1.5rem 0;
+            color: var(--text-white);
+            font-weight: 600;
+        }
+        
+        .segment-grid, .suffix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .segment-card, .suffix-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-primary);
+        }
+        
+        .segment-letter, .suffix-letter {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Models Section */
+        .models-section {
+            padding: 5rem 5%;
+            background-color: var(--bg-dark);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+        
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .model-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .model-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 15px 30px rgba(255, 149, 0, 0.1);
+        }
+        
+        .model-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .model-category {
+            display: inline-block;
+            background: rgba(255, 149, 0, 0.2);
+            color: var(--accent-primary);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .spec-item {
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .spec-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            margin-bottom: 0.3rem;
+        }
+        
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+        
+        /* Comparison Section */
+        .comparison-section {
+            padding: 5rem 5%;
+            background-color: rgba(26, 26, 26, 0.5);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: rgba(255, 149, 0, 0.2);
+            color: var(--accent-primary);
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 149, 0, 0.1);
+            transform: translateX(-5px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #080808;
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-title {
+                font-size: 2.5rem;
+            }
+            
+            .product-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .models-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .naming-example {
+                font-size: 1.4rem;
+            }
+            
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .segment-grid, .suffix-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-hero {
+                padding: 100px 5% 5%;
+            }
+            
+            .naming-system {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo">HEG<span>IR</span></a>
+        <div class="nav-icons">
+            <a href="index.html" title="На главную"><i class="fas fa-home"></i></a>
+            <a href="nexus.html" title="Видеокарты"><i class="fas fa-project-diagram"></i></a>
+            <a href="severity.html" title="Ноутбуки"><i class="fas fa-laptop"></i></a>
+            <a href="phtalex.html" title="Смартфоны"><i class="fas fa-mobile-alt"></i></a>
+            <a href="flux.html" title="VR очки"><i class="fas fa-vr-cardboard"></i></a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="product-hero">
+        <h1 class="product-title">HEGIR PENISA</h1>
+        <p class="product-tagline">Мощь с интеллектом. Основа вашей системы.</p>
+        
+        <div class="naming-system">
+            <h3>Система именования процессоров</h3>
+            <p>Каждый процессор Hegir PENISA имеет уникальное имя, которое говорит о его возможностях:</p>
+            
+            <div class="naming-example">Hegir PENISA [Сегмент][Поколение]-[Модель][Суффикс]</div>
+            
+            <div class="segment-grid">
+                <div class="segment-card">
+                    <div class="segment-letter">P</div>
+                    <h4>Desktop/Performance</h4>
+                    <p>Настольные процессоры для максимальной производительности</p>
+                </div>
+                <div class="segment-card">
+                    <div class="segment-letter">N</div>
+                    <h4>Notebook</h4>
+                    <p>Мобильные процессоры для ноутбуков</p>
+                </div>
+                <div class="segment-card">
+                    <div class="segment-letter">PH</div>
+                    <h4>Phone</h4>
+                    <p>Процессоры для смартфонов</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2.5rem;">Суффиксы производительности</h3>
+            <div class="suffix-grid">
+                <div class="suffix-card">
+                    <div class="suffix-letter">K</div>
+                    <h4>Keen (баланс)</h4>
+                    <p>Оптимальное сочетание производительности и эффективности</p>
+                </div>
+                <div class="suffix-card">
+                    <div class="suffix-letter">A</div>
+                    <h4>Advanced (для разгона)</h4>
+                    <p>Разблокированный множитель для оверклокинга</p>
+                </div>
+                <div class="suffix-card">
+                    <div class="suffix-letter">F</div>
+                    <h4>Fury (экстрим)</h4>
+                    <p>Максимальная производительность для энтузиастов</p>
+                </div>
+                <div class="suffix-card">
+                    <div class="suffix-letter">H</div>
+                    <h4>Heat-efficient</h4>
+                    <p>Оптимизированное тепловыделение</p>
+                </div>
+                <div class="suffix-card">
+                    <div class="suffix-letter">B</div>
+                    <h4>Built-in graphics</h4>
+                    <p>С интегрированной графикой</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Models Section -->
+    <section class="models-section">
+        <h2 class="section-title">Флагманские модели</h2>
+        
+        <div class="models-grid">
+            <!-- P7-980KF -->
+            <div class="model-card">
+                <div class="model-name">P7-980KF</div>
+                <div class="model-category">Desktop Performance</div>
+                <p>Флагманский процессор для настольных систем, сочетающий экстремальную производительность с интеллектуальным управлением мощностью.</p>
+                
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">Ядра / Потоки</div>
+                        <div class="spec-value">24 / 48</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Базовая частота</div>
+                        <div class="spec-value">3.8 GHz</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Turbo Boost</div>
+                        <div class="spec-value">5.2 GHz</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Кэш L3</div>
+                        <div class="spec-value">64 MB</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">TDP</div>
+                        <div class="spec-value">180W</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Техпроцесс</div>
+                        <div class="spec-value">5 нм</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Расшифровка имени</div>
+                    <div class="spec-value">P7-980KF = Desktop, 7 поколение, модель 980, Keen+Fury</div>
+                </div>
+            </div>
+            
+            <!-- N5-620HB -->
+            <div class="model-card">
+                <div class="model-name">N5-620HB</div>
+                <div class="model-category">Notebook Mobile</div>
+                <p>Мобильный процессор для профессиональных ноутбуков с интегрированной графикой и оптимизированным энергопотреблением.</p>
+                
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">Ядра / Потоки</div>
+                        <div class="spec-value">12 / 24</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Базовая частота</div>
+                        <div class="spec-value">2.4 GHz</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Turbo Boost</div>
+                        <div class="spec-value">4.8 GHz</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Кэш L3</div>
+                        <div class="spec-value">32 MB</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">TDP</div>
+                        <div class="spec-value">45W</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Техпроцесс</div>
+                        <div class="spec-value">5 нм</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Расшифровка имени</div>
+                    <div class="spec-value">N5-620HB = Notebook, 5 поколение, модель 620, Heat-efficient+Built-in graphics</div>
+                </div>
+            </div>
+            
+            <!-- PH3-320K -->
+            <div class="model-card">
+                <div class="model-name">PH3-320K</div>
+                <div class="model-category">Phone Mobile</div>
+                <p>Энергоэффективный процессор для флагманских смартфонов с интеллектуальным управлением питанием.</p>
+                
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">Ядра</div>
+                        <div class="spec-value">8 (1+3+4)</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Макс. частота</div>
+                        <div class="spec-value">3.2 GHz</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Нейроускоритель</div>
+                        <div class="spec-value">32 TOPS</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">GPU</div>
+                        <div class="spec-value">Hegir Graphics 12-core</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Техпроцесс</div>
+                        <div class="spec-value">4 нм</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Расшифровка имени</div>
+                    <div class="spec-value">PH3-320K = Phone, 3 поколение, модель 320, Keen (баланс)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <h2 class="section-title">Сравнение моделей</h2>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Характеристика</th>
+                    <th>P7-980KF (Desktop)</th>
+                    <th>N5-620HB (Notebook)</th>
+                    <th>PH3-320K (Phone)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Сегмент</td>
+                    <td>P - Desktop/Performance</td>
+                    <td>N - Notebook</td>
+                    <td>PH - Phone</td>
+                </tr>
+                <tr>
+                    <td>Поколение</td>
+                    <td>7</td>
+                    <td>5</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Ядра/Потоки</td>
+                    <td>24 / 48</td>
+                    <td>12 / 24</td>
+                    <td>8 ядер (1+3+4)</td>
+                </tr>
+                <tr>
+                    <td>Макс. частота</td>
+                    <td>5.2 GHz</td>
+                    <td>4.8 GHz</td>
+                    <td>3.2 GHz</td>
+                </tr>
+                <tr>
+                    <td>Кэш L3</td>
+                    <td>64 MB</td>
+                    <td>32 MB</td>
+                    <td>12 MB</td>
+                </tr>
+                <tr>
+                    <td>TDP</td>
+                    <td>180W</td>
+                    <td>45W</td>
+                    <td>8W</td>
+                </tr>
+                <tr>
+                    <td>Техпроцесс</td>
+                    <td>5 нм</td>
+                    <td>5 нм</td>
+                    <td>4 нм</td>
+                </tr>
+                <tr>
+                    <td>Суффиксы</td>
+                    <td>K+F: Keen+Fury (баланс+экстрим)</td>
+                    <td>H+B: Heat-efficient+Built-in graphics</td>
+                    <td>K: Keen (баланс)</td>
+                </tr>
+                <tr>
+                    <td>Рекомендуемое использование</td>
+                    <td>Игры, рендеринг, рабочие станции</td>
+                    <td>Мобильные рабочие станции, творчество</td>
+                    <td>Флагманские смартфоны, мобильный гейминг</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Назад к экосистеме Hegir
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="nexus.html">Видеокарты NEXUS</a>
+            <a href="severity.html">Ноутбуки SEVERITY</a>
+            <a href="phtalex.html">Смартфоны PHTALEX</a>
+            <a href="flux.html">VR очки FLUX</a>
+        </div>
+        <p>© 2023 Hegir Technologies. Все права защищены.</p>
+        <p style="margin-top: 1rem; opacity: 0.7;">Процессоры Hegir PENISA — основа экосистемы Hegir</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add hover effect to model cards
+        document.querySelectorAll('.model-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Simple animation for hero section
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroTitle = document.querySelector('.product-title');
+            const heroTagline = document.querySelector('.product-tagline');
+            
+            // Add fade-in animation
+            setTimeout(() => {
+                heroTitle.style.opacity = '1';
+                heroTitle.style.transform = 'translateY(0)';
+            }, 300);
+            
+            setTimeout(() => {
+                heroTagline.style.opacity = '1';
+                heroTagline.style.transform = 'translateY(0)';
+            }, 600);
+            
+            // Initial state
+            heroTitle.style.opacity = '0';
+            heroTitle.style.transform = 'translateY(20px)';
+            heroTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            
+            heroTagline.style.opacity = '0';
+            heroTagline.style.transform = 'translateY(20px)';
+            heroTagline.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            
+            // Animate naming system
+            const namingSystem = document.querySelector('.naming-system');
+            if (namingSystem) {
+                setTimeout(() => {
+                    namingSystem.style.opacity = '1';
+                    namingSystem.style.transform = 'translateY(0)';
+                }, 900);
+                
+                namingSystem.style.opacity = '0';
+                namingSystem.style.transform = 'translateY(20px)';
+                namingSystem.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            }
+        });
+    </script>
+</body>
+</html>
