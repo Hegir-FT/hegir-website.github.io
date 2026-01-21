@@ -1,0 +1,924 @@
+<!-- Страница форума: forum.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hegir Forum - Сообщество пользователей</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0D0D0D;
+            --text-white: #FFFFFF;
+            --text-light: #E5E5E5;
+            --accent-primary: #0066FF;
+            --accent-secondary: #00AAFF;
+            --card-bg: #1A1A1A;
+            --success: #00CC88;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(13, 13, 13, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+        }
+        
+        .main-nav a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .main-nav a.active {
+            color: var(--accent-primary);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .account-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .account-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 5% 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, 
+                rgba(13, 13, 13, 1) 0%,
+                rgba(13, 13, 13, 0.95) 50%,
+                rgba(0, 102, 255, 0.05) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Forum Container */
+        .forum-container {
+            display: flex;
+            padding: 2rem 5%;
+            gap: 2rem;
+        }
+        
+        /* Forum Sidebar */
+        .forum-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-white);
+        }
+        
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-list li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .category-list a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+        
+        .category-list a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-primary);
+        }
+        
+        .category-list i {
+            width: 20px;
+        }
+        
+        .create-thread-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .create-thread-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        /* Forum Main */
+        .forum-main {
+            flex: 1;
+        }
+        
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 300px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+        
+        .search-btn {
+            padding: 0 1rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        
+        /* Threads List */
+        .threads-list {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+        
+        .thread-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+        
+        .thread-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .thread-item:last-child {
+            border-bottom: none;
+        }
+        
+        .thread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        
+        .thread-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .thread-title:hover {
+            color: var(--accent-primary);
+        }
+        
+        .thread-category {
+            display: inline-block;
+            background: rgba(0, 102, 255, 0.2);
+            color: var(--accent-primary);
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        
+        .thread-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        .thread-author {
+            color: var(--accent-primary);
+        }
+        
+        .thread-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #080808;
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* Thread Modal */
+        .thread-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .thread-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+            font-weight: 500;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent-primary);
+        }
+        
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .btn-primary, .btn-secondary {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .forum-container {
+                flex-direction: column;
+            }
+            
+            .forum-sidebar {
+                width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .forum-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 100px 5% 2rem;
+            }
+            
+            .thread-stats {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index-shop.html" class="logo">HEG<span>IR</span> FORUM</a>
+        
+        <nav class="main-nav">
+            <a href="index-shop.html">Магазин</a>
+            <a href="forum.html" class="active">Форум</a>
+            <a href="#help">Помощь</a>
+            <a href="#guides">Гайды</a>
+            <a href="#news">Новости</a>
+        </nav>
+        
+        <div class="user-actions">
+            <a href="login.html" class="account-btn">
+                <i class="fas fa-user"></i>
+                <span>Войти</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Сообщество Hegir</h1>
+        <p>Обсуждайте продукты, делитесь опытом, получайте помощь от других пользователей и экспертов Hegir.</p>
+    </section>
+
+    <!-- Forum Container -->
+    <div class="forum-container">
+        <!-- Sidebar -->
+        <aside class="forum-sidebar">
+            <div class="sidebar-card">
+                <h3>Категории</h3>
+                <ul class="category-list">
+                    <li><a href="#all"><i class="fas fa-comments"></i> Все обсуждения</a></li>
+                    <li><a href="#processors"><i class="fas fa-microchip"></i> Процессоры PENISA</a></li>
+                    <li><a href="#graphics"><i class="fas fa-project-diagram"></i> Видеокарты NEXUS</a></li>
+                    <li><a href="#laptops"><i class="fas fa-laptop"></i> Ноутбуки SEVERITY</a></li>
+                    <li><a href="#smartphones"><i class="fas fa-mobile-alt"></i> Смартфоны PHTALEX</a></li>
+                    <li><a href="#vr"><i class="fas fa-vr-cardboard"></i> VR очки FLUX</a></li>
+                    <li><a href="#support"><i class="fas fa-headset"></i> Техподдержка</a></li>
+                    <li><a href="#guides"><i class="fas fa-book"></i> Гайды и инструкции</a></li>
+                    <li><a href="#offtopic"><i class="fas fa-users"></i> Оффтоп</a></li>
+                </ul>
+                
+                <button class="create-thread-btn" id="create-thread-btn">
+                    <i class="fas fa-plus"></i> Создать тему
+                </button>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3>Статистика форума</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary);">1,254</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Тем</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary);">12,487</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Сообщений</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary);">3,215</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Пользователей</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success);">24</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Онлайн</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="forum-main">
+            <div class="forum-header">
+                <h2>Последние обсуждения</h2>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Поиск по форуму...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Threads List -->
+            <div class="threads-list">
+                <!-- Thread 1 -->
+                <div class="thread-item">
+                    <div class="thread-header">
+                        <a href="#" class="thread-title">
+                            Проблема с перегревом PENISA P7-980KF
+                            <span class="thread-category">Процессоры</span>
+                        </a>
+                        <div class="thread-meta">
+                            <span class="thread-time">2 часа назад</span>
+                        </div>
+                    </div>
+                    <p>У кого-нибудь была проблема с перегревом процессора под нагрузкой? Температура достигает 95°C при рендеринге...</p>
+                    <div class="thread-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user"></i>
+                            <span class="thread-author">AlexTech</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>24 ответа</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>1.2k просмотров</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 2 -->
+                <div class="thread-item">
+                    <div class="thread-header">
+                        <a href="#" class="thread-title">
+                            Обзор NEXUS 90 после месяца использования
+                            <span class="thread-category">Видеокарты</span>
+                        </a>
+                        <div class="thread-meta">
+                            <span class="thread-time">Вчера</span>
+                        </div>
+                    </div>
+                    <p>Поделюсь впечатлениями от использования флагманской видеокарты в играх и рабочих задачах...</p>
+                    <div class="thread-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user"></i>
+                            <span class="thread-author">ProGamer42</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>56 ответов</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>3.4k просмотров</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 3 -->
+                <div class="thread-item">
+                    <div class="thread-header">
+                        <a href="#" class="thread-title">
+                            Сравнение SEVERITY Workstation Pro и Code
+                            <span class="thread-category">Ноутбуки</span>
+                        </a>
+                        <div class="thread-meta">
+                            <span class="thread-time">3 дня назад</span>
+                        </div>
+                    </div>
+                    <p>Выбираю между двумя моделями для работы с 3D и видео. Кто что посоветует?</p>
+                    <div class="thread-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user"></i>
+                            <span class="thread-author">DesignMaster</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>42 ответа</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>2.8k просмотров</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 4 -->
+                <div class="thread-item">
+                    <div class="thread-header">
+                        <a href="#" class="thread-title">
+                            FLUX Pro - первые впечатления от погружения
+                            <span class="thread-category">VR очки</span>
+                        </a>
+                        <div class="thread-meta">
+                            <span class="thread-time">5 дней назад</span>
+                        </div>
+                    </div>
+                    <p>Только что получил свой FLUX Pro. Реальность действительно заканчивается!</p>
+                    <div class="thread-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user"></i>
+                            <span class="thread-author">VR_Enthusiast</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>89 ответов</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>5.1k просмотров</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 5 -->
+                <div class="thread-item">
+                    <div class="thread-header">
+                        <a href="#" class="thread-title">
+                            PHTALEX Aura - камера в темноте
+                            <span class="thread-category">Смартфоны</span>
+                        </a>
+                        <div class="thread-meta">
+                            <span class="thread-time">Неделю назад</span>
+                        </div>
+                    </div>
+                    <p>Тестировал Quantum Camera в полной темноте. Результаты поражают!</p>
+                    <div class="thread-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user"></i>
+                            <span class="thread-author">PhotoPro</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>112 ответов</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>7.3k просмотров</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Hegir Forum</h4>
+                <p>Официальное сообщество пользователей продукции Hegir.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Правила</h4>
+                <ul>
+                    <li><a href="#">Правила форума</a></li>
+                    <li><a href="#">Кодекс поведения</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Модерация</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Ресурсы</h4>
+                <ul>
+                    <li><a href="#">Драйверы и ПО</a></li>
+                    <li><a href="#">Руководства</a></li>
+                    <li><a href="#">Блог Hegir</a></li>
+                    <li><a href="#">Поддержка</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Контакты</h4>
+                <p>Телефон: 8-800-555-35-35</p>
+                <p>Email: forum@hegir.ru</p>
+                <p>Модерация: mod@hegir.ru</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2023 Hegir Technologies. Все права защищены.</div>
+        </div>
+    </footer>
+
+    <!-- Create Thread Modal -->
+    <div class="thread-modal" id="thread-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Создать новую тему</h3>
+                <button class="btn-secondary close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="thread-form">
+                    <div class="form-group">
+                        <label for="thread-title">Заголовок темы</label>
+                        <input type="text" id="thread-title" class="form-input" placeholder="Введите заголовок..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="thread-category">Категория</label>
+                        <select id="thread-category" class="form-select" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="processors">Процессоры PENISA</option>
+                            <option value="graphics">Видеокарты NEXUS</option>
+                            <option value="laptops">Ноутбуки SEVERITY</option>
+                            <option value="smartphones">Смартфоны PHTALEX</option>
+                            <option value="vr">VR очки FLUX</option>
+                            <option value="support">Техподдержка</option>
+                            <option value="guides">Гайды и инструкции</option>
+                            <option value="offtopic">Оффтоп</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="thread-content">Содержание</label>
+                        <textarea id="thread-content" class="form-textarea" placeholder="Опишите вашу тему подробно..." required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary close-modal">Отмена</button>
+                        <button type="submit" class="btn-primary">Создать тему</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM элементы
+        const createThreadBtn = document.getElementById('create-thread-btn');
+        const threadModal = document.getElementById('thread-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        const threadForm = document.getElementById('thread-form');
+        const searchInput = document.querySelector('.search-input');
+        const searchBtn = document.querySelector('.search-btn');
+        const categoryLinks = document.querySelectorAll('.category-list a');
+
+        // Проверка авторизации
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('hegir_user') !== null;
+            if (!isLoggedIn) {
+                alert('Для создания тем необходимо войти в аккаунт.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Обработчики
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создание темы
+            createThreadBtn.addEventListener('click', function() {
+                if (checkAuth()) {
+                    threadModal.classList.add('active');
+                }
+            });
+
+            // Закрытие модального окна
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    threadModal.classList.remove('active');
+                });
+            });
+
+            // Обработка формы
+            threadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('thread-title').value;
+                const category = document.getElementById('thread-category').value;
+                const content = document.getElementById('thread-content').value;
+                
+                // Здесь должна быть отправка на сервер
+                alert(`Тема "${title}" успешно создана!`);
+                
+                // Очищаем форму и закрываем модальное окно
+                threadForm.reset();
+                threadModal.classList.remove('active');
+                
+                // В реальном приложении здесь нужно обновить список тем
+            });
+
+            // Поиск
+            searchBtn.addEventListener('click', function() {
+                const query = searchInput.value.trim();
+                if (query) {
+                    alert(`Поиск по запросу: "${query}"`);
+                    // В реальном приложении здесь должен быть поиск
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            // Фильтрация по категориям
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('href').replace('#', '');
+                    
+                    if (category === 'all') {
+                        alert('Показываем все темы');
+                    } else {
+                        alert(`Фильтрация по категории: ${category}`);
+                    }
+                    
+                    // В реальном приложении здесь должна быть фильтрация
+                });
+            });
+
+            // Закрытие модального окна при клике вне его
+            document.addEventListener('click', function(event) {
+                if (event.target === threadModal) {
+                    threadModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
