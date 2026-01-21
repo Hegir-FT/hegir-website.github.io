@@ -1,0 +1,988 @@
+<!-- Главная страница магазина: index-shop.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hegir Store - Купить продукцию Hegir</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0D0D0D;
+            --text-white: #FFFFFF;
+            --text-light: #E5E5E5;
+            --accent-primary: #0066FF;
+            --accent-secondary: #00AAFF;
+            --card-bg: #1A1A1A;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(13, 13, 13, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .main-nav a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .main-nav a.active {
+            color: var(--accent-primary);
+        }
+        
+        .main-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .cart-btn, .account-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .cart-btn:hover, .account-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 5% 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, 
+                rgba(13, 13, 13, 1) 0%,
+                rgba(13, 13, 13, 0.95) 50%,
+                rgba(0, 102, 255, 0.05) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            padding: 2rem 5%;
+            background: var(--bg-dark);
+        }
+        
+        .tabs-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Products Grid */
+        .products-section {
+            padding: 2rem 5%;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.1);
+        }
+        
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 170, 255, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .product-image i {
+            font-size: 4rem;
+            color: var(--accent-primary);
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .product-specs {
+            margin-bottom: 1.5rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+        
+        .spec-label {
+            opacity: 0.7;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+        
+        .buy-btn, .details-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        .details-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .details-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #080808;
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-white);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-icons a {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background: var(--card-bg);
+            z-index: 2000;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-modal.active {
+            display: block;
+            transform: translateX(0);
+        }
+        
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-items {
+            padding: 1.5rem;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .cart-total {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-modal {
+                width: 100%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 100px 5% 2rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .tabs-container {
+                gap: 0.5rem;
+            }
+            
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index-shop.html" class="logo">HEG<span>IR</span> STORE</a>
+        
+        <nav class="main-nav">
+            <a href="index-shop.html" class="active">Магазин</a>
+            <a href="#processors" class="category-tab">Процессоры</a>
+            <a href="#laptops" class="category-tab">Ноутбуки</a>
+            <a href="#graphics" class="category-tab">Видеокарты</a>
+            <a href="#smartphones" class="category-tab">Смартфоны</a>
+            <a href="#vr" class="category-tab">VR очки</a>
+            <a href="forum.html">Форум</a>
+            <a href="#about">О компании</a>
+        </nav>
+        
+        <div class="user-actions">
+            <a href="#" class="cart-btn" id="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </a>
+            <a href="login.html" class="account-btn">
+                <i class="fas fa-user"></i>
+                <span>Войти</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Магазин Hegir</h1>
+        <p>Купить продукцию Hegir с официальной гарантией. Полная экосистема устройств для работы, творчества и игр.</p>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="category-tabs">
+        <div class="tabs-container">
+            <button class="tab-btn active" data-category="all">Все товары</button>
+            <button class="tab-btn" data-category="processors">Процессоры</button>
+            <button class="tab-btn" data-category="laptops">Ноутбуки</button>
+            <button class="tab-btn" data-category="graphics">Видеокарты</button>
+            <button class="tab-btn" data-category="smartphones">Смартфоны</button>
+            <button class="tab-btn" data-category="vr">VR очки</button>
+            <button class="tab-btn" data-category="accessories">Аксессуары</button>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="products-grid" id="products-grid">
+            <!-- Продукты будут загружаться динамически -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Hegir Store</h4>
+                <p>Официальный магазин продукции Hegir. Гарантия качества и лучшие цены.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Категории</h4>
+                <ul>
+                    <li><a href="#processors">Процессоры</a></li>
+                    <li><a href="#laptops">Ноутбуки</a></li>
+                    <li><a href="#graphics">Видеокарты</a></li>
+                    <li><a href="#smartphones">Смартфоны</a></li>
+                    <li><a href="#vr">VR очки</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Помощь</h4>
+                <ul>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Гарантия</a></li>
+                    <li><a href="#">Возврат товара</a></li>
+                    <li><a href="#">Техподдержка</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Контакты</h4>
+                <p>Телефон: 8-800-555-35-35</p>
+                <p>Email: store@hegir.ru</p>
+                <p>Адрес: Москва, ул. Технологическая, 15</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2023 Hegir Technologies. Все права защищены.</div>
+            <div>
+                <a href="#" style="color: var(--text-light); margin-right: 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: var(--text-light);">Условия использования</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Корзина</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Товары в корзине -->
+            <p style="text-align: center; padding: 2rem;">Корзина пуста</p>
+        </div>
+        <div class="cart-total">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span>Итого:</span>
+                <span id="cart-total">0 ₽</span>
+            </div>
+            <button class="buy-btn" style="width: 100%;">Оформить заказ</button>
+        </div>
+    </div>
+
+    <script>
+        // Данные о товарах
+        const products = [
+            {
+                id: 1,
+                name: "HEGIR PENISA P7-980KF",
+                category: "processors",
+                price: 89990,
+                specs: [
+                    { label: "Ядра/Потоки", value: "24/48" },
+                    { label: "Частота", value: "до 5.2 GHz" },
+                    { label: "Кэш L3", value: "64 MB" }
+                ],
+                icon: "microchip",
+                detailsUrl: "penisa.html"
+            },
+            {
+                id: 2,
+                name: "HEGIR PENISA N5-620HB",
+                category: "processors",
+                price: 45990,
+                specs: [
+                    { label: "Ядра/Потоки", value: "12/24" },
+                    { label: "Частота", value: "до 4.8 GHz" },
+                    { label: "Кэш L3", value: "32 MB" }
+                ],
+                icon: "microchip",
+                detailsUrl: "penisa.html"
+            },
+            {
+                id: 3,
+                name: "HEGIR SEVERITY Workstation Pro",
+                category: "laptops",
+                price: 249990,
+                specs: [
+                    { label: "Процессор", value: "PENISA N7-980K" },
+                    { label: "Видеокарта", value: "NEXUS 90 Mobile" },
+                    { label: "Память", value: "128 GB DDR5" }
+                ],
+                icon: "laptop",
+                detailsUrl: "severity.html"
+            },
+            {
+                id: 4,
+                name: "HEGIR SEVERITY Code",
+                category: "laptops",
+                price: 159990,
+                specs: [
+                    { label: "Процессор", value: "PENISA N5-760K" },
+                    { label: "Видеокарта", value: "NEXUS 70 Mobile" },
+                    { label: "Память", value: "64 GB DDR5" }
+                ],
+                icon: "laptop",
+                detailsUrl: "severity.html"
+            },
+            {
+                id: 5,
+                name: "HEGIR NEXUS 90",
+                category: "graphics",
+                price: 179990,
+                specs: [
+                    { label: "CUDA ядер", value: "16,384" },
+                    { label: "Память", value: "24 GB GDDR6X" },
+                    { label: "TDP", value: "450W" }
+                ],
+                icon: "project-diagram",
+                detailsUrl: "nexus.html"
+            },
+            {
+                id: 6,
+                name: "HEGIR NEXUS 70",
+                category: "graphics",
+                price: 99990,
+                specs: [
+                    { label: "CUDA ядер", value: "10,240" },
+                    { label: "Память", value: "16 GB GDDR6" },
+                    { label: "TDP", value: "300W" }
+                ],
+                icon: "project-diagram",
+                detailsUrl: "nexus.html"
+            },
+            {
+                id: 7,
+                name: "HEGIR PHTALEX Aura",
+                category: "smartphones",
+                price: 119990,
+                specs: [
+                    { label: "Процессор", value: "PENISA PH4-480F" },
+                    { label: "Память", value: "16 GB / 1 TB" },
+                    { label: "Экран", value: "6.8\" 144Hz" }
+                ],
+                icon: "mobile-alt",
+                detailsUrl: "phtalex.html"
+            },
+            {
+                id: 8,
+                name: "HEGIR PHTALEX Essence",
+                category: "smartphones",
+                price: 79990,
+                specs: [
+                    { label: "Процессор", value: "PENISA PH3-360K" },
+                    { label: "Память", value: "12 GB / 512 GB" },
+                    { label: "Экран", value: "6.7\" 120Hz" }
+                ],
+                icon: "mobile-alt",
+                detailsUrl: "phtalex.html"
+            },
+            {
+                id: 9,
+                name: "HEGIR FLUX Pro",
+                category: "vr",
+                price: 89990,
+                specs: [
+                    { label: "Разрешение", value: "4K × 4K на глаз" },
+                    { label: "Частота", value: "144 Hz" },
+                    { label: "Поле зрения", value: "210°" }
+                ],
+                icon: "vr-cardboard",
+                detailsUrl: "flux.html"
+            },
+            {
+                id: 10,
+                name: "HEGIR FLUX Standard",
+                category: "vr",
+                price: 59990,
+                specs: [
+                    { label: "Разрешение", value: "2.5K × 2.5K на глаз" },
+                    { label: "Частота", value: "120 Hz" },
+                    { label: "Поле зрения", value: "180°" }
+                ],
+                icon: "vr-cardboard",
+                detailsUrl: "flux.html"
+            }
+        ];
+
+        // Корзина
+        let cart = JSON.parse(localStorage.getItem('hegir_cart')) || [];
+        let cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+        // DOM элементы
+        const productsGrid = document.getElementById('products-grid');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const cartBtn = document.getElementById('cart-btn');
+        const cartModal = document.getElementById('cart-modal');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCountEl = document.getElementById('cart-count');
+
+        // Функция отображения продуктов
+        function displayProducts(category = 'all') {
+            productsGrid.innerHTML = '';
+            
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.dataset.id = product.id;
+                
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <i class="fas fa-${product.icon}"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">${product.price.toLocaleString()} ₽</div>
+                        <div class="product-specs">
+                            ${product.specs.map(spec => `
+                                <div class="spec-item">
+                                    <span class="spec-label">${spec.label}</span>
+                                    <span class="spec-value">${spec.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="product-actions">
+                            <button class="buy-btn add-to-cart" data-id="${product.id}">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                            <a href="${product.detailsUrl}" class="details-btn">
+                                <i class="fas fa-info-circle"></i> Подробнее
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+            
+            // Добавляем обработчики для кнопок "В корзину"
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.id);
+                    addToCart(productId);
+                });
+            });
+        }
+
+        // Функция добавления в корзину
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+            
+            cartCount++;
+            updateCart();
+            saveCart();
+            
+            // Анимация добавления
+            const button = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+            button.innerHTML = '<i class="fas fa-check"></i> Добавлено';
+            button.style.background = 'linear-gradient(90deg, #00CC88, #00FFAA)';
+            
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-shopping-cart"></i> В корзину';
+                button.style.background = 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))';
+            }, 1000);
+        }
+
+        // Функция обновления корзины
+        function updateCart() {
+            cartCountEl.textContent = cartCount;
+            
+            // Обновляем содержимое корзины
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 2rem;">Корзина пуста</p>';
+                cartTotal.textContent = '0 ₽';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = '';
+            
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem;
+                    background: rgba(255, 255, 255, 0.03);
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+                `;
+                
+                cartItem.innerHTML = `
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.3rem;">${item.name}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">${item.price.toLocaleString()} ₽ × ${item.quantity}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button class="decrease-item" data-id="${item.id}" style="background: none; border: none; color: var(--accent-primary); cursor: pointer;">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span>${item.quantity}</span>
+                        <button class="increase-item" data-id="${item.id}" style="background: none; border: none; color: var(--accent-primary); cursor: pointer;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="remove-item" data-id="${item.id}" style="background: none; border: none; color: #ff4444; cursor: pointer; margin-left: 1rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            cartTotal.textContent = total.toLocaleString() + ' ₽';
+            
+            // Добавляем обработчики для кнопок в корзине
+            document.querySelectorAll('.increase-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const item = cart.find(item => item.id === id);
+                    if (item) {
+                        item.quantity++;
+                        cartCount++;
+                        updateCart();
+                        saveCart();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.decrease-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const itemIndex = cart.findIndex(item => item.id === id);
+                    if (itemIndex !== -1) {
+                        if (cart[itemIndex].quantity > 1) {
+                            cart[itemIndex].quantity--;
+                            cartCount--;
+                        } else {
+                            cart.splice(itemIndex, 1);
+                            cartCount--;
+                        }
+                        updateCart();
+                        saveCart();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const itemIndex = cart.findIndex(item => item.id === id);
+                    if (itemIndex !== -1) {
+                        cartCount -= cart[itemIndex].quantity;
+                        cart.splice(itemIndex, 1);
+                        updateCart();
+                        saveCart();
+                    }
+                });
+            });
+        }
+
+        // Сохранение корзины в localStorage
+        function saveCart() {
+            localStorage.setItem('hegir_cart', JSON.stringify(cart));
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Отображаем все продукты по умолчанию
+            displayProducts();
+            
+            // Обновляем счетчик корзины
+            updateCart();
+            
+            // Обработчики для вкладок
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Убираем активный класс у всех кнопок
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active');
+                    // Отображаем продукты выбранной категории
+                    displayProducts(this.dataset.category);
+                });
+            });
+            
+            // Обработчики для корзины
+            cartBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                cartModal.classList.add('active');
+            });
+            
+            closeCartBtn.addEventListener('click', function() {
+                cartModal.classList.remove('active');
+            });
+            
+            // Закрытие корзины при клике вне её области
+            document.addEventListener('click', function(event) {
+                if (!cartModal.contains(event.target) && !cartBtn.contains(event.target)) {
+                    cartModal.classList.remove('active');
+                }
+            });
+            
+            // Обработчики для навигационных ссылок категорий
+            document.querySelectorAll('.category-tab').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('href').replace('#', '');
+                    
+                    // Находим соответствующую кнопку таба и кликаем по ней
+                    const tabBtn = document.querySelector(`.tab-btn[data-category="${category}"]`);
+                    if (tabBtn) {
+                        tabBtn.click();
+                        window.scrollTo({
+                            top: document.querySelector('.category-tabs').offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
