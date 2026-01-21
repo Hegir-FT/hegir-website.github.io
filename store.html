@@ -1,10 +1,9 @@
-<!-- Главная страница магазина: index-shop.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hegir Store - Купить продукцию Hegir</title>
+    <title>Hegir Store - Официальный магазин</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,6 +14,9 @@
             --accent-primary: #0066FF;
             --accent-secondary: #00AAFF;
             --card-bg: #1A1A1A;
+            --success: #00CC88;
+            --warning: #FF9500;
+            --error: #FF4444;
             --transition: all 0.3s ease;
         }
         
@@ -102,7 +104,7 @@
             align-items: center;
         }
         
-        .cart-btn, .account-btn {
+        .cart-btn, .account-btn, .admin-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-light);
@@ -114,9 +116,10 @@
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
+            font-size: 0.9rem;
         }
         
-        .cart-btn:hover, .account-btn:hover {
+        .cart-btn:hover, .account-btn:hover, .admin-btn:hover {
             background: rgba(0, 102, 255, 0.1);
             border-color: var(--accent-primary);
             color: var(--accent-primary);
@@ -198,7 +201,7 @@
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
         }
         
@@ -217,17 +220,50 @@
         }
         
         .product-image {
-            height: 200px;
+            height: 220px;
             background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 170, 255, 0.05));
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            position: relative;
+            overflow: hidden;
         }
         
-        .product-image i {
-            font-size: 4rem;
-            color: var(--accent-primary);
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+        
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .stock-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .stock-in {
+            background: rgba(0, 204, 136, 0.2);
+            color: var(--success);
+        }
+        
+        .stock-low {
+            background: rgba(255, 149, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .stock-out {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--error);
         }
         
         .product-info {
@@ -267,6 +303,24 @@
             opacity: 0.7;
         }
         
+        .product-stock {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .stock-count {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .stock-zero {
+            color: var(--error);
+            font-weight: 600;
+        }
+        
         .product-actions {
             display: flex;
             gap: 0.8rem;
@@ -292,9 +346,14 @@
             color: white;
         }
         
-        .buy-btn:hover {
+        .buy-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .details-btn {
@@ -306,6 +365,132 @@
         .details-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 100vh;
+            background: var(--card-bg);
+            z-index: 2000;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-modal.active {
+            display: block;
+            transform: translateX(0);
+        }
+        
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-items {
+            padding: 1.5rem;
+            height: calc(100vh - 250px);
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 170, 255, 0.05));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .cart-item-price {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        .cart-item-remove {
+            color: var(--error);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .cart-total {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .total-amount {
+            color: var(--accent-primary);
+            font-weight: 700;
+            font-size: 1.3rem;
         }
         
         /* Footer */
@@ -372,43 +557,35 @@
             color: var(--accent-primary);
         }
         
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
+        /* Notification */
+        .notification {
             position: fixed;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 100vh;
+            top: 100px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
             background: var(--card-bg);
-            z-index: 2000;
-            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
-            transform: translateX(100%);
+            border-left: 4px solid var(--accent-primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            transform: translateX(120%);
             transition: transform 0.3s ease;
         }
         
-        .cart-modal.active {
-            display: block;
+        .notification.show {
             transform: translateX(0);
         }
         
-        .cart-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .notification.success {
+            border-left-color: var(--success);
         }
         
-        .cart-items {
-            padding: 1.5rem;
-            height: calc(100vh - 200px);
-            overflow-y: auto;
+        .notification.error {
+            border-left-color: var(--error);
         }
         
-        .cart-total {
-            padding: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .notification.warning {
+            border-left-color: var(--warning);
         }
         
         /* Responsive */
@@ -416,15 +593,15 @@
             .hero h1 {
                 font-size: 2.8rem;
             }
+            
+            .cart-modal {
+                width: 400px;
+            }
         }
         
         @media (max-width: 768px) {
             .main-nav {
                 display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
             }
             
             .hero h1 {
@@ -463,6 +640,44 @@
                 padding: 0.6rem 1rem;
                 font-size: 0.9rem;
             }
+            
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cart-item-image {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 13, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
         }
     </style>
 </head>
@@ -479,7 +694,6 @@
             <a href="#smartphones" class="category-tab">Смартфоны</a>
             <a href="#vr" class="category-tab">VR очки</a>
             <a href="forum.html">Форум</a>
-            <a href="#about">О компании</a>
         </nav>
         
         <div class="user-actions">
@@ -491,13 +705,17 @@
                 <i class="fas fa-user"></i>
                 <span>Войти</span>
             </a>
+            <a href="admin.html" class="admin-btn">
+                <i class="fas fa-cog"></i>
+                <span>Админ</span>
+            </a>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
         <h1>Магазин Hegir</h1>
-        <p>Купить продукцию Hegir с официальной гарантией. Полная экосистема устройств для работы, творчества и игр.</p>
+        <p>Купить продукцию Hegir с официальной гарантией и доставкой через 5post.</p>
     </section>
 
     <!-- Category Tabs -->
@@ -516,7 +734,7 @@
     <!-- Products Grid -->
     <section class="products-section">
         <div class="products-grid" id="products-grid">
-            <!-- Продукты будут загружаться динамически -->
+            <!-- Продукты загружаются динамически -->
         </div>
     </section>
 
@@ -556,10 +774,10 @@
             </div>
             
             <div class="footer-column">
-                <h4>Контакты</h4>
-                <p>Телефон: 8-800-555-35-35</p>
-                <p>Email: store@hegir.ru</p>
-                <p>Адрес: Москва, ул. Технологическая, 15</p>
+                <h4>Доставка 5post</h4>
+                <p>Быстрая доставка по всей России через службу 5post.</p>
+                <p>Срок доставки: 1-5 дней</p>
+                <p>Стоимость: от 290 ₽</p>
             </div>
         </div>
         
@@ -582,156 +800,35 @@
         </div>
         <div class="cart-items" id="cart-items">
             <!-- Товары в корзине -->
-            <p style="text-align: center; padding: 2rem;">Корзина пуста</p>
         </div>
         <div class="cart-total">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <div class="total-row">
                 <span>Итого:</span>
-                <span id="cart-total">0 ₽</span>
+                <span id="cart-total" class="total-amount">0 ₽</span>
             </div>
-            <button class="buy-btn" style="width: 100%;">Оформить заказ</button>
+            <a href="checkout.html" class="buy-btn" style="width: 100%; text-decoration: none;">
+                <i class="fas fa-shopping-bag"></i> Оформить заказ через 5post
+            </a>
         </div>
     </div>
 
-    <script>
-        // Данные о товарах
-        const products = [
-            {
-                id: 1,
-                name: "HEGIR PENISA P7-980KF",
-                category: "processors",
-                price: 89990,
-                specs: [
-                    { label: "Ядра/Потоки", value: "24/48" },
-                    { label: "Частота", value: "до 5.2 GHz" },
-                    { label: "Кэш L3", value: "64 MB" }
-                ],
-                icon: "microchip",
-                detailsUrl: "penisa.html"
-            },
-            {
-                id: 2,
-                name: "HEGIR PENISA N5-620HB",
-                category: "processors",
-                price: 45990,
-                specs: [
-                    { label: "Ядра/Потоки", value: "12/24" },
-                    { label: "Частота", value: "до 4.8 GHz" },
-                    { label: "Кэш L3", value: "32 MB" }
-                ],
-                icon: "microchip",
-                detailsUrl: "penisa.html"
-            },
-            {
-                id: 3,
-                name: "HEGIR SEVERITY Workstation Pro",
-                category: "laptops",
-                price: 249990,
-                specs: [
-                    { label: "Процессор", value: "PENISA N7-980K" },
-                    { label: "Видеокарта", value: "NEXUS 90 Mobile" },
-                    { label: "Память", value: "128 GB DDR5" }
-                ],
-                icon: "laptop",
-                detailsUrl: "severity.html"
-            },
-            {
-                id: 4,
-                name: "HEGIR SEVERITY Code",
-                category: "laptops",
-                price: 159990,
-                specs: [
-                    { label: "Процессор", value: "PENISA N5-760K" },
-                    { label: "Видеокарта", value: "NEXUS 70 Mobile" },
-                    { label: "Память", value: "64 GB DDR5" }
-                ],
-                icon: "laptop",
-                detailsUrl: "severity.html"
-            },
-            {
-                id: 5,
-                name: "HEGIR NEXUS 90",
-                category: "graphics",
-                price: 179990,
-                specs: [
-                    { label: "CUDA ядер", value: "16,384" },
-                    { label: "Память", value: "24 GB GDDR6X" },
-                    { label: "TDP", value: "450W" }
-                ],
-                icon: "project-diagram",
-                detailsUrl: "nexus.html"
-            },
-            {
-                id: 6,
-                name: "HEGIR NEXUS 70",
-                category: "graphics",
-                price: 99990,
-                specs: [
-                    { label: "CUDA ядер", value: "10,240" },
-                    { label: "Память", value: "16 GB GDDR6" },
-                    { label: "TDP", value: "300W" }
-                ],
-                icon: "project-diagram",
-                detailsUrl: "nexus.html"
-            },
-            {
-                id: 7,
-                name: "HEGIR PHTALEX Aura",
-                category: "smartphones",
-                price: 119990,
-                specs: [
-                    { label: "Процессор", value: "PENISA PH4-480F" },
-                    { label: "Память", value: "16 GB / 1 TB" },
-                    { label: "Экран", value: "6.8\" 144Hz" }
-                ],
-                icon: "mobile-alt",
-                detailsUrl: "phtalex.html"
-            },
-            {
-                id: 8,
-                name: "HEGIR PHTALEX Essence",
-                category: "smartphones",
-                price: 79990,
-                specs: [
-                    { label: "Процессор", value: "PENISA PH3-360K" },
-                    { label: "Память", value: "12 GB / 512 GB" },
-                    { label: "Экран", value: "6.7\" 120Hz" }
-                ],
-                icon: "mobile-alt",
-                detailsUrl: "phtalex.html"
-            },
-            {
-                id: 9,
-                name: "HEGIR FLUX Pro",
-                category: "vr",
-                price: 89990,
-                specs: [
-                    { label: "Разрешение", value: "4K × 4K на глаз" },
-                    { label: "Частота", value: "144 Hz" },
-                    { label: "Поле зрения", value: "210°" }
-                ],
-                icon: "vr-cardboard",
-                detailsUrl: "flux.html"
-            },
-            {
-                id: 10,
-                name: "HEGIR FLUX Standard",
-                category: "vr",
-                price: 59990,
-                specs: [
-                    { label: "Разрешение", value: "2.5K × 2.5K на глаз" },
-                    { label: "Частота", value: "120 Hz" },
-                    { label: "Поле зрения", value: "180°" }
-                ],
-                icon: "vr-cardboard",
-                detailsUrl: "flux.html"
-            }
-        ];
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading"></div>
+    </div>
+
+    <script>
+        // База данных товаров (будет загружаться из JSON)
+        let products = [];
+        let categories = new Set();
+        
         // Корзина
         let cart = JSON.parse(localStorage.getItem('hegir_cart')) || [];
         let cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
+        
         // DOM элементы
         const productsGrid = document.getElementById('products-grid');
         const tabButtons = document.querySelectorAll('.tab-btn');
@@ -741,8 +838,85 @@
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
         const cartCountEl = document.getElementById('cart-count');
-
-        // Функция отображения продуктов
+        const notification = document.getElementById('notification');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        
+        // Загрузка товаров из JSON
+        async function loadProducts() {
+            showLoading();
+            try {
+                // В реальном проекте здесь будет запрос к серверу
+                // Для примера используем локальный JSON
+                const response = await fetch('products.json');
+                if (!response.ok) throw new Error('Не удалось загрузить товары');
+                
+                products = await response.json();
+                
+                // Собираем категории
+                categories.clear();
+                products.forEach(product => {
+                    categories.add(product.category);
+                });
+                
+                displayProducts('all');
+                updateCart();
+            } catch (error) {
+                showNotification('Ошибка загрузки товаров: ' + error.message, 'error');
+                // Загружаем демо данные
+                loadDemoProducts();
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Демо данные для примера
+        function loadDemoProducts() {
+            products = [
+                {
+                    id: 1,
+                    name: "HEGIR PENISA P7-980KF",
+                    category: "processors",
+                    price: 89990,
+                    stock: 10,
+                    image: "https://via.placeholder.com/300x200/0066FF/FFFFFF?text=PENISA+P7",
+                    specs: [
+                        { label: "Ядра/Потоки", value: "24/48" },
+                        { label: "Частота", value: "до 5.2 GHz" },
+                        { label: "Кэш L3", value: "64 MB" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "HEGIR SEVERITY Workstation Pro",
+                    category: "laptops",
+                    price: 249990,
+                    stock: 3,
+                    image: "https://via.placeholder.com/300x200/00CC88/FFFFFF?text=SEVERITY+Pro",
+                    specs: [
+                        { label: "Процессор", value: "PENISA N7-980K" },
+                        { label: "Видеокарта", value: "NEXUS 90 Mobile" },
+                        { label: "Память", value: "128 GB DDR5" }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "HEGIR NEXUS 90",
+                    category: "graphics",
+                    price: 179990,
+                    stock: 0,
+                    image: "https://via.placeholder.com/300x200/FF9500/FFFFFF?text=NEXUS+90",
+                    specs: [
+                        { label: "CUDA ядер", value: "16,384" },
+                        { label: "Память", value: "24 GB GDDR6X" },
+                        { label: "TDP", value: "450W" }
+                    ]
+                }
+            ];
+            
+            displayProducts('all');
+        }
+        
+        // Отображение товаров
         function displayProducts(category = 'all') {
             productsGrid.innerHTML = '';
             
@@ -750,33 +924,72 @@
                 ? products 
                 : products.filter(product => product.category === category);
             
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; opacity: 0.7;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Товары не найдены</h3>
+                        <p>В этой категории пока нет товаров</p>
+                    </div>
+                `;
+                return;
+            }
+            
             filteredProducts.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.dataset.id = product.id;
                 
+                // Определяем статус наличия
+                let stockBadge = '';
+                let stockClass = '';
+                let stockText = '';
+                
+                if (product.stock > 10) {
+                    stockBadge = `<span class="stock-badge stock-in">В наличии</span>`;
+                    stockClass = 'stock-count';
+                    stockText = `${product.stock} шт.`;
+                } else if (product.stock > 0) {
+                    stockBadge = `<span class="stock-badge stock-low">Мало</span>`;
+                    stockClass = 'stock-count';
+                    stockText = `Осталось ${product.stock} шт.`;
+                } else {
+                    stockBadge = `<span class="stock-badge stock-out">Нет в наличии</span>`;
+                    stockClass = 'stock-zero';
+                    stockText = 'Нет в наличии';
+                }
+                
                 productCard.innerHTML = `
                     <div class="product-image">
-                        <i class="fas fa-${product.icon}"></i>
+                        ${stockBadge}
+                        <img src="${product.image}" alt="${product.name}" 
+                             onerror="this.src='https://via.placeholder.com/300x200/1A1A1A/FFFFFF?text=Hegir+${product.category}'">
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>
                         <div class="product-price">${product.price.toLocaleString()} ₽</div>
                         <div class="product-specs">
-                            ${product.specs.map(spec => `
+                            ${product.specs ? product.specs.map(spec => `
                                 <div class="spec-item">
                                     <span class="spec-label">${spec.label}</span>
                                     <span class="spec-value">${spec.value}</span>
                                 </div>
-                            `).join('')}
+                            `).join('') : ''}
+                        </div>
+                        <div class="product-stock">
+                            <i class="fas fa-${product.stock > 0 ? 'check-circle' : 'times-circle'}"></i>
+                            <span class="${stockClass}">${stockText}</span>
                         </div>
                         <div class="product-actions">
-                            <button class="buy-btn add-to-cart" data-id="${product.id}">
-                                <i class="fas fa-shopping-cart"></i> В корзину
+                            <button class="buy-btn add-to-cart" 
+                                    data-id="${product.id}"
+                                    ${product.stock === 0 ? 'disabled' : ''}>
+                                <i class="fas fa-shopping-cart"></i> 
+                                ${product.stock === 0 ? 'Нет в наличии' : 'В корзину'}
                             </button>
-                            <a href="${product.detailsUrl}" class="details-btn">
+                            <button class="details-btn show-details" data-id="${product.id}">
                                 <i class="fas fa-info-circle"></i> Подробнее
-                            </a>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -784,28 +997,49 @@
                 productsGrid.appendChild(productCard);
             });
             
-            // Добавляем обработчики для кнопок "В корзину"
+            // Добавляем обработчики
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const productId = parseInt(this.dataset.id);
                     addToCart(productId);
                 });
             });
+            
+            document.querySelectorAll('.show-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.id);
+                    showProductDetails(productId);
+                });
+            });
         }
-
-        // Функция добавления в корзину
+        
+        // Добавление в корзину
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Проверяем наличие
+            if (product.stock === 0) {
+                showNotification('Товара нет в наличии', 'error');
+                return;
+            }
+            
             const existingItem = cart.find(item => item.id === productId);
             
+            // Проверяем, не превышает ли количество доступное
             if (existingItem) {
+                if (existingItem.quantity >= product.stock) {
+                    showNotification('Нельзя добавить больше доступного количества', 'warning');
+                    return;
+                }
                 existingItem.quantity++;
             } else {
                 cart.push({
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    quantity: 1
+                    quantity: 1,
+                    image: product.image
                 });
             }
             
@@ -813,24 +1047,32 @@
             updateCart();
             saveCart();
             
-            // Анимация добавления
+            showNotification('Товар добавлен в корзину', 'success');
+            
+            // Анимация кнопки
             const button = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+            const originalHTML = button.innerHTML;
             button.innerHTML = '<i class="fas fa-check"></i> Добавлено';
             button.style.background = 'linear-gradient(90deg, #00CC88, #00FFAA)';
             
             setTimeout(() => {
-                button.innerHTML = '<i class="fas fa-shopping-cart"></i> В корзину';
+                button.innerHTML = originalHTML;
                 button.style.background = 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))';
             }, 1000);
         }
-
-        // Функция обновления корзины
+        
+        // Обновление корзины
         function updateCart() {
             cartCountEl.textContent = cartCount;
             
             // Обновляем содержимое корзины
             if (cart.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; padding: 2rem;">Корзина пуста</p>';
+                cartItems.innerHTML = `
+                    <div style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                        <p>Корзина пуста</p>
+                    </div>
+                `;
                 cartTotal.textContent = '0 ₽';
                 return;
             }
@@ -839,36 +1081,33 @@
             cartItems.innerHTML = '';
             
             cart.forEach(item => {
-                total += item.price * item.quantity;
+                const product = products.find(p => p.id === item.id);
+                total += product.price * item.quantity;
                 
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item';
-                cartItem.style.cssText = `
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 1rem;
-                    background: rgba(255, 255, 255, 0.03);
-                    border-radius: 8px;
-                    margin-bottom: 1rem;
-                `;
                 
                 cartItem.innerHTML = `
-                    <div>
-                        <div style="font-weight: 600; margin-bottom: 0.3rem;">${item.name}</div>
-                        <div style="font-size: 0.9rem; opacity: 0.7;">${item.price.toLocaleString()} ₽ × ${item.quantity}</div>
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}"
+                             onerror="this.src='https://via.placeholder.com/60/1A1A1A/FFFFFF?text=Hegir'">
                     </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <button class="decrease-item" data-id="${item.id}" style="background: none; border: none; color: var(--accent-primary); cursor: pointer;">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <span>${item.quantity}</span>
-                        <button class="increase-item" data-id="${item.id}" style="background: none; border: none; color: var(--accent-primary); cursor: pointer;">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="remove-item" data-id="${item.id}" style="background: none; border: none; color: #ff4444; cursor: pointer; margin-left: 1rem;">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">${product.price.toLocaleString()} ₽ × ${item.quantity} = ${(product.price * item.quantity).toLocaleString()} ₽</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn decrease-item" data-id="${item.id}">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn increase-item" data-id="${item.id}" 
+                                    ${product.stock <= item.quantity ? 'disabled' : ''}>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="cart-item-remove remove-item" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
                 
@@ -880,13 +1119,17 @@
             // Добавляем обработчики для кнопок в корзине
             document.querySelectorAll('.increase-item').forEach(button => {
                 button.addEventListener('click', function() {
+                    if (this.disabled) return;
                     const id = parseInt(this.dataset.id);
                     const item = cart.find(item => item.id === id);
-                    if (item) {
+                    const product = products.find(p => p.id === id);
+                    
+                    if (item && product && item.quantity < product.stock) {
                         item.quantity++;
                         cartCount++;
                         updateCart();
                         saveCart();
+                        showNotification('Количество обновлено', 'success');
                     }
                 });
             });
@@ -905,6 +1148,7 @@
                         }
                         updateCart();
                         saveCart();
+                        showNotification('Количество обновлено', 'success');
                     }
                 });
             });
@@ -918,32 +1162,137 @@
                         cart.splice(itemIndex, 1);
                         updateCart();
                         saveCart();
+                        showNotification('Товар удален из корзины', 'success');
                     }
                 });
             });
         }
-
+        
+        // Показать детали товара
+        function showProductDetails(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Создаем модальное окно с деталями
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                padding: 2rem;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: var(--card-bg); border-radius: 12px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                    <div style="padding: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                            <h2 style="font-size: 1.8rem;">${product.name}</h2>
+                            <button id="close-details" style="background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 1.5rem;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                            <div>
+                                <img src="${product.image}" alt="${product.name}" style="width: 100%; border-radius: 8px;"
+                                     onerror="this.src='https://via.placeholder.com/400/1A1A1A/FFFFFF?text=Hegir+${product.category}'">
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 1rem;">
+                                    ${product.price.toLocaleString()} ₽
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <span style="color: ${product.stock > 0 ? '#00CC88' : '#FF4444'};">
+                                        <i class="fas fa-${product.stock > 0 ? 'check-circle' : 'times-circle'}"></i>
+                                        ${product.stock > 0 ? `В наличии: ${product.stock} шт.` : 'Нет в наличии'}
+                                    </span>
+                                </div>
+                                <button class="buy-btn add-to-cart-details" 
+                                        data-id="${product.id}"
+                                        style="width: 100%; padding: 1rem;"
+                                        ${product.stock === 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-shopping-cart"></i>
+                                    ${product.stock === 0 ? 'Нет в наличии' : 'Добавить в корзину'}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="margin-bottom: 1rem;">Характеристики</h3>
+                            <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 1.5rem;">
+                                ${product.specs ? product.specs.map(spec => `
+                                    <div style="display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                        <span style="opacity: 0.7;">${spec.label}</span>
+                                        <span style="font-weight: 600;">${spec.value}</span>
+                                    </div>
+                                `).join('') : '<p>Нет дополнительных характеристик</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Закрытие модального окна
+            modal.querySelector('#close-details').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+            
+            // Добавление в корзину из модального окна
+            modal.querySelector('.add-to-cart-details').addEventListener('click', () => {
+                addToCart(product.id);
+                document.body.removeChild(modal);
+            });
+        }
+        
         // Сохранение корзины в localStorage
         function saveCart() {
             localStorage.setItem('hegir_cart', JSON.stringify(cart));
         }
-
+        
+        // Показать уведомление
+        function showNotification(message, type = 'info') {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Показать/скрыть загрузку
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+        
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
-            // Отображаем все продукты по умолчанию
-            displayProducts();
-            
-            // Обновляем счетчик корзины
-            updateCart();
+            // Загружаем товары
+            loadProducts();
             
             // Обработчики для вкладок
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Убираем активный класс у всех кнопок
                     tabButtons.forEach(btn => btn.classList.remove('active'));
-                    // Добавляем активный класс текущей кнопке
                     this.classList.add('active');
-                    // Отображаем продукты выбранной категории
                     displayProducts(this.dataset.category);
                 });
             });
@@ -960,7 +1309,7 @@
             
             // Закрытие корзины при клике вне её области
             document.addEventListener('click', function(event) {
-                if (!cartModal.contains(event.target) && !cartBtn.contains(event.target)) {
+                if (!cartModal.contains(event.target) && !cartBtn.contains(event.target) && !cartBtn.querySelector('i').contains(event.target)) {
                     cartModal.classList.remove('active');
                 }
             });
@@ -971,7 +1320,6 @@
                     e.preventDefault();
                     const category = this.getAttribute('href').replace('#', '');
                     
-                    // Находим соответствующую кнопку таба и кликаем по ней
                     const tabBtn = document.querySelector(`.tab-btn[data-category="${category}"]`);
                     if (tabBtn) {
                         tabBtn.click();
@@ -982,7 +1330,28 @@
                     }
                 });
             });
+            
+            // Проверка авторизации для админ-панели
+            const adminBtn = document.querySelector('.admin-btn');
+            if (adminBtn) {
+                adminBtn.addEventListener('click', function(e) {
+                    const user = JSON.parse(localStorage.getItem('hegir_user'));
+                    if (!user || !user.isAdmin) {
+                        e.preventDefault();
+                        showNotification('Требуется авторизация администратора', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1500);
+                    }
+                });
+            }
         });
+        
+        // Глобальная функция для обновления товаров (для админ-панели)
+        window.updateProducts = function(newProducts) {
+            products = newProducts;
+            displayProducts('all');
+        };
     </script>
 </body>
 </html>
