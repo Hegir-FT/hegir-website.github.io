@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "name": "HEGIR PENISA P7-980KF",
+    "category": "processors",
+    "price": 1,
+    "stock": 15,
+    "image": "uploads/products/penisa-p7.jpg",
+    "specs": [
+      {"label": "Ядра/Потоки", "value": "24/48"},
+      {"label": "Частота", "value": "до 5.2 GHz"},
+      {"label": "Кэш L3", "value": "64 MB"},
+      {"label": "TDP", "value": "180W"},
+      {"label": "Техпроцесс", "value": "5 нм"}
+    ],
+    "description": "Флагманский процессор для настольных систем, сочетающий экстремальную производительность с интеллектуальным управлением мощностью.",
+    "createdAt": "2023-10-01"
+  },
+  {
+    "id": 2,
+    "name": "HEGIR PENISA N5-620HB",
+    "category": "processors",
+    "price": 1,
+    "stock": 8,
+    "image": "uploads/products/penisa-n5.jpg",
+    "specs": [
+      {"label": "Ядра/Потоки", "value": "12/24"},
+      {"label": "Частота", "value": "до 4.8 GHz"},
+      {"label": "Кэш L3", "value": "32 MB"},
+      {"label": "TDP", "value": "45W"},
+      {"label": "Техпроцесс", "value": "5 нм"}
+    ],
+    "description": "Мобильный процессор для профессиональных ноутбуков с интегрированной графикой и оптимизированным энергопотреблением.",
+    "createdAt": "2023-10-01"
+  },
+  {
+    "id": 3,
+    "name": "HEGIR SEVERITY Workstation Pro",
+    "category": "laptops",
+    "price": 1,
+    "stock": 3,
+    "image": "uploads/products/severity-pro.jpg",
+    "specs": [
+      {"label": "Процессор", "value": "PENISA N7-980K"},
+      {"label": "Видеокарта", "value": "NEXUS 90 Mobile"},
+      {"label": "Память", "value": "128 GB DDR5"},
+      {"label": "Накопитель", "value": "4 TB NVMe SSD"},
+      {"label": "Экран", "value": "17.3\" 4K Mini-LED"}
+    ],
+    "description": "Мощнейшая мобильная рабочая станция для инженеров, архитекторов и создателей контента.",
+    "createdAt": "2023-10-05"
+  },
+  {
+    "id": 4,
+    "name": "HEGIR SEVERITY Code",
+    "category": "laptops",
+    "price": 1,
+    "stock": 7,
+    "image": "uploads/products/severity-code.jpg",
+    "specs": [
+      {"label": "Процессор", "value": "PENISA N5-760K"},
+      {"label": "Видеокарта", "value": "NEXUS 70 Mobile"},
+      {"label": "Память", "value": "64 GB DDR5"},
+      {"label": "Накопитель", "value": "2 TB NVMe SSD"},
+      {"label": "Экран", "value": "16\" QHD+ IPS"}
+    ],
+    "description": "Оптимизирован для разработчиков с идеальной клавиатурой, точным тачпадом и долгим временем автономной работы.",
+    "createdAt": "2023-10-10"
+  },
+  {
+    "id": 5,
+    "name": "HEGIR NEXUS 90",
+    "category": "graphics",
+    "price": 1,
+    "stock": 4,
+    "image": "uploads/products/nexus-90.jpg",
+    "specs": [
+      {"label": "CUDA ядер", "value": "16,384"},
+      {"label": "Память", "value": "24 GB GDDR6X"},
+      {"label": "Шина памяти", "value": "384-bit"},
+      {"label": "RT ядра", "value": "128"},
+      {"label": "TDP", "value": "450W"}
+    ],
+    "description": "Абсолютная вершина графической производительности. Создана для рендеринга будущего сегодня.",
+    "createdAt": "2023-10-15"
+  },
+  {
+    "id": 6,
+    "name": "HEGIR NEXUS 70",
+    "category": "graphics",
+    "price": 1,
+    "stock": 12,
+    "image": "uploads/products/nexus-70.jpg",
+    "specs": [
+      {"label": "CUDA ядер", "value": "10,240"},
+      {"label": "Память", "value": "16 GB GDDR6"},
+      {"label": "Шина памяти", "value": "256-bit"},
+      {"label": "RT ядра", "value": "80"},
+      {"label": "TDP", "value": "300W"}
+    ],
+    "description": "Идеальный выбор для геймеров и создателей контента, предлагающий лучший баланс цены и производительности.",
+    "createdAt": "2023-10-15"
+  },
+  {
+    "id": 7,
+    "name": "HEGIR PHTALEX Aura",
+    "category": "smartphones",
+    "price": 1,
+    "stock": 6,
+    "image": "uploads/products/phtalex-aura.jpg",
+    "specs": [
+      {"label": "Процессор", "value": "PENISA PH4-480F"},
+      {"label": "Память", "value": "16 GB / 1 TB"},
+      {"label": "Экран", "value": "6.8\" Dynamic AMOLED"},
+      {"label": "Камеры", "value": "200MP + 50MP + 12MP"},
+      {"label": "Батарея", "value": "5000 mAh"}
+    ],
+    "description": "Абсолютная вершина инноваций. Смартфон, который меняет представление о возможностях мобильных устройств.",
+    "createdAt": "2023-10-20"
+  },
+  {
+    "id": 8,
+    "name": "HEGIR PHTALEX Essence",
+    "category": "smartphones",
+    "price": 1,
+    "stock": 0,
+    "image": "uploads/products/phtalex-essence.jpg",
+    "specs": [
+      {"label": "Процессор", "value": "PENISA PH3-360K"},
+      {"label": "Память", "value": "12 GB / 512 GB"},
+      {"label": "Экран", "value": "6.7\" Super AMOLED"},
+      {"label": "Камеры", "value": "108MP + 12MP + 8MP"},
+      {"label": "Батарея", "value": "4500 mAh"}
+    ],
+    "description": "Сущность совершенства. Баланс мощности, элегантности и инноваций в идеальном сочетании.",
+    "createdAt": "2023-10-20"
+  },
+  {
+    "id": 9,
+    "name": "HEGIR FLUX Pro",
+    "category": "vr",
+    "price": 1,
+    "stock": 2,
+    "image": "uploads/products/flux-pro.jpg",
+    "specs": [
+      {"label": "Разрешение", "value": "4K × 4K на глаз"},
+      {"label": "Частота", "value": "144 Hz"},
+      {"label": "Поле зрения", "value": "210°"},
+      {"label": "Вес", "value": "450 г"},
+      {"label": "Сенсоры", "value": "ЭЭГ, ЭМГ, отслеживание глаз"}
+    ],
+    "description": "Максимальное погружение для профессионалов. Создано для разработчиков, архитекторов, исследователей и энтузиастов.",
+    "createdAt": "2023-10-25"
+  },
+  {
+    "id": 10,
+    "name": "HEGIR FLUX Standard",
+    "category": "vr",
+    "price": 1,
+    "stock": 9,
+    "image": "uploads/products/flux-standard.jpg",
+    "specs": [
+      {"label": "Разрешение", "value": "2.5K × 2.5K на глаз"},
+      {"label": "Частота", "value": "120 Hz"},
+      {"label": "Поле зрения", "value": "180°"},
+      {"label": "Вес", "value": "380 г"},
+      {"label": "Сенсоры", "value": "Отслеживание глаз"}
+    ],
+    "description": "Идеальный баланс качества и доступности для геймеров и энтузиастов виртуальной реальности.",
+    "createdAt": "2023-10-25"
+  }
+]
