@@ -735,7 +735,7 @@
                 <li><a href="#ecosystem">Экосистема</a></li>
                 <li><a href="#features">Технологии</a></li>
                 <li><a href="#support">Поддержка</a></li>
-                <li><a href="#about">О компании</a></li>
+                <li><a href="company.html">О компании</a></li>
             </ul>
         </nav>
         <div class="nav-icons">
@@ -935,10 +935,10 @@
                 <h4>Hegir</h4>
                 <p>Создаем единую экосистему технологических устройств для работы, творчества, игр и погружения.</p>
                 <div class="social-icons">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/hegir" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/hegir" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/hegir" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://linkedin.com/company/hegir" target="_blank"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
             
@@ -956,11 +956,9 @@
             <div class="footer-column">
                 <h4>Компания</h4>
                 <ul>
-                    <li><a href="#about">О Hegir</a></li>
+                    <li><a href="company.html">О Hegir</a></li>
                     <li><a href="#features">Технологии</a></li>
                     <li><a href="#ecosystem">Экосистема</a></li>
-                    <li><a href="#career">Карьера</a></li>
-                    <li><a href="#press">Пресса</a></li>
                 </ul>
             </div>
             
@@ -1189,20 +1187,21 @@
                 });
             }
             
-            // Cart button
+            // Cart button - открытие store.html
             const cartBtn = document.getElementById('cart-btn');
             if (cartBtn) {
                 cartBtn.addEventListener('click', function() {
-                    alert('Корзина: Добавьте продукты Hegir в корзину для покупки');
+                    window.location.href = 'store.html';
                 });
             }
             
-            // Newsletter form
+            // Newsletter form - реальная отправка (заглушка)
             const newsletterSubmit = document.getElementById('newsletter-submit');
             const newsletterEmail = document.getElementById('newsletter-email');
             
             if (newsletterSubmit && newsletterEmail) {
-                newsletterSubmit.addEventListener('click', function() {
+                newsletterSubmit.addEventListener('click', function(e) {
+                    e.preventDefault();
                     const email = newsletterEmail.value.trim();
                     
                     if (!email) {
@@ -1215,45 +1214,32 @@
                         return;
                     }
                     
-                    alert(`Спасибо за подписку! Проверьте ваш email ${email} для подтверждения.`);
-                    newsletterEmail.value = '';
+                    // Имитация отправки
+                    newsletterSubmit.disabled = true;
+                    newsletterSubmit.textContent = 'Отправка...';
+                    
+                    setTimeout(() => {
+                        alert(`Спасибо за подписку! На адрес ${email} отправлено письмо с подтверждением.`);
+                        newsletterEmail.value = '';
+                        newsletterSubmit.disabled = false;
+                        newsletterSubmit.textContent = 'Подписаться';
+                    }, 1000);
                 });
                 
                 // Allow submitting with Enter key
                 newsletterEmail.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
+                        e.preventDefault();
                         newsletterSubmit.click();
                     }
                 });
             }
             
-            // Social links
+            // Social links уже работают через href в HTML
+            // Проверяем и удаляем старые обработчики если нужно
             document.querySelectorAll('.social-icons a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const platform = this.querySelector('i').className.split(' ')[1].replace('fa-', '');
-                    alert(`Следите за нами в ${platform} для получения последних новостей о Hegir!`);
-                });
-            });
-            
-            // Footer links
-            document.querySelectorAll('.footer-column ul li a').forEach(link => {
-                if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const sectionId = this.getAttribute('href');
-                        const section = document.querySelector(sectionId);
-                        
-                        if (section) {
-                            window.scrollTo({
-                                top: section.offsetTop - 80,
-                                behavior: 'smooth'
-                            });
-                        } else {
-                            alert('Раздел находится в разработке');
-                        }
-                    });
-                }
+                link.removeAttribute('onclick');
+                link.onclick = null;
             });
         }
         
