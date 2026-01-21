@@ -679,6 +679,524 @@
             align-items: center;
             z-index: 4000;
         }
+
+        /* Стили для нового футера магазина */
+        #store-footer .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .store-badges {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .store-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .store-badge i {
+            color: var(--accent-primary);
+        }
+        
+        .delivery-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .delivery-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .delivery-item i {
+            font-size: 1.2rem;
+            color: var(--accent-primary);
+        }
+        
+        .delivery-item strong {
+            display: block;
+            color: var(--text-white);
+        }
+        
+        .delivery-item span {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .contact-store p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .subscription-benefits p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .subscription-benefits i {
+            color: var(--success);
+        }
+        
+        .footer-middle {
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .payment-section, .security-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .payment-section h5, .security-section h5 {
+            margin-bottom: 1rem;
+            color: var(--text-white);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .payment-method:hover {
+            background: rgba(0, 102, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .payment-method i {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+        
+        .payment-method span {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .security-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: help;
+        }
+        
+        .security-badge i {
+            color: var(--success);
+        }
+        
+        .store-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 102, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-item strong {
+            display: block;
+            color: var(--text-white);
+            margin-bottom: 0.2rem;
+        }
+        
+        .info-item span {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .legal-info {
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            line-height: 1.4;
+        }
+        
+        .legal-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .age-restriction {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 8px;
+        }
+        
+        .age-badge {
+            width: 40px;
+            height: 40px;
+            background: var(--error);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .regulatory-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .regulatory-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .regulatory-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Quick access buttons */
+        .quick-access {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+        
+        .quick-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+        }
+        
+        .quick-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
+        }
+        
+        .quick-btn span {
+            font-size: 0.6rem;
+            margin-top: 0.2rem;
+        }
+        
+        /* Chat widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 2rem;
+            width: 300px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-widget.active {
+            display: flex;
+        }
+        
+        .chat-header {
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .chat-minimize {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .chat-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 400px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .chat-message {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-message.bot {
+            flex-direction: row;
+        }
+        
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.8rem;
+            border-radius: 12px;
+        }
+        
+        .chat-message.user .message-content {
+            background: rgba(0, 102, 255, 0.2);
+        }
+        
+        .message-text {
+            margin-bottom: 0.3rem;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            text-align: right;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 0.5rem;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+        
+        .chat-input button {
+            width: 40px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        /* Модальные окна */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 90%;
+            max-width: 800px;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .success-icon {
+            font-size: 3rem;
+            color: #FF9500;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .payment-methods-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-access {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .quick-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .store-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .chat-widget {
+                width: calc(100% - 2rem);
+                right: 1rem;
+                bottom: 80px;
+            }
+            
+            .footer-middle {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .store-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-access {
+                display: none;
+            }
+            
+            .regulatory-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -739,54 +1257,263 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="store-footer">
         <div class="footer-content">
             <div class="footer-column">
-                <h4>Hegir Store</h4>
+                <h4><i class="fas fa-store"></i> Hegir Store</h4>
                 <p>Официальный магазин продукции Hegir. Гарантия качества и лучшие цены.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-vk"></i></a>
-                    <a href="#"><i class="fab fa-telegram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                <div class="store-badges">
+                    <div class="store-badge" data-badge="guarantee">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Официальная гарантия</span>
+                    </div>
+                    <div class="store-badge" data-badge="delivery">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Быстрая доставка</span>
+                    </div>
+                    <div class="store-badge" data-badge="support">
+                        <i class="fas fa-headset"></i>
+                        <span>Поддержка 24/7</span>
+                    </div>
+                </div>
+                <div class="social-icons" style="margin-top: 1.5rem;">
+                    <a href="https://vk.com/hegir" target="_blank" class="social-link" data-platform="vk">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                    <a href="https://t.me/hegir" target="_blank" class="social-link" data-platform="telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://youtube.com/hegir" target="_blank" class="social-link" data-platform="youtube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://zen.yandex.ru/hegir" target="_blank" class="social-link" data-platform="yandex">
+                        <i class="fab fa-yandex"></i>
+                    </a>
                 </div>
             </div>
             
             <div class="footer-column">
-                <h4>Категории</h4>
+                <h4><i class="fas fa-th-large"></i> Категории</h4>
                 <ul>
-                    <li><a href="#processors">Процессоры</a></li>
-                    <li><a href="#laptops">Ноутбуки</a></li>
-                    <li><a href="#graphics">Видеокарты</a></li>
-                    <li><a href="#smartphones">Смартфоны</a></li>
-                    <li><a href="#vr">VR очки</a></li>
+                    <li><a href="#processors" class="category-link" data-category="processors">Процессоры</a></li>
+                    <li><a href="#laptops" class="category-link" data-category="laptops">Ноутбуки</a></li>
+                    <li><a href="#graphics" class="category-link" data-category="graphics">Видеокарты</a></li>
+                    <li><a href="#smartphones" class="category-link" data-category="smartphones">Смартфоны</a></li>
+                    <li><a href="#vr" class="category-link" data-category="vr">VR очки</a></li>
+                    <li><a href="#accessories" class="category-link" data-category="accessories">Аксессуары</a></li>
+                    <li><a href="#components" class="category-link" data-category="components">Комплектующие</a></li>
+                    <li><a href="#peripherals" class="category-link" data-category="peripherals">Периферия</a></li>
                 </ul>
             </div>
             
             <div class="footer-column">
-                <h4>Помощь</h4>
+                <h4><i class="fas fa-question-circle"></i> Помощь покупателю</h4>
                 <ul>
-                    <li><a href="#">Доставка и оплата</a></li>
-                    <li><a href="#">Гарантия</a></li>
-                    <li><a href="#">Возврат товара</a></li>
-                    <li><a href="#">Техподдержка</a></li>
-                    <li><a href="#">Контакты</a></li>
+                    <li><a href="delivery.html">Доставка и оплата</a></li>
+                    <li><a href="warranty.html">Гарантия и возврат</a></li>
+                    <li><a href="credit.html">Кредит и рассрочка</a></li>
+                    <li><a href="tradein.html">Trade-in</a></li>
+                    <li><a href="assembly.html">Сборка ПК</a></li>
+                    <li><a href="configurator.html">Конфигуратор</a></li>
+                    <li><a href="status.html">Статус заказа</a></li>
+                    <li><a href="faq.html">Частые вопросы</a></li>
                 </ul>
             </div>
             
             <div class="footer-column">
-                <h4>Доставка 5post</h4>
-                <p>Быстрая доставка по всей России через службу 5post.</p>
-                <p>Срок доставки: 1-5 дней</p>
-                <p>Стоимость: от 290 ₽</p>
+                <h4><i class="fas fa-truck"></i> Доставка 5post</h4>
+                <div class="delivery-info">
+                    <div class="delivery-item">
+                        <i class="fas fa-cube"></i>
+                        <div>
+                            <strong>Постаматы</strong>
+                            <span>от 290 ₽ • 1-3 дня</span>
+                        </div>
+                    </div>
+                    <div class="delivery-item">
+                        <i class="fas fa-home"></i>
+                        <div>
+                            <strong>Курьер</strong>
+                            <span>от 490 ₽ • 1-3 дня</span>
+                        </div>
+                    </div>
+                    <div class="delivery-item">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <strong>Экспресс</strong>
+                            <span>от 890 ₽ • 24 часа</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tracking-link">
+                    <a href="https://5post.ru/tracking" target="_blank" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-box"></i> Отследить заказ
+                    </a>
+                </div>
+                <div class="contact-store" style="margin-top: 1.5rem;">
+                    <p><i class="fas fa-phone"></i> 8-800-555-35-35</p>
+                    <p><i class="fas fa-envelope"></i> store@hegir.ru</p>
+                    <p><i class="fas fa-comments"></i> Онлайн-чат</p>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4><i class="fas fa-bell"></i> Узнайте о скидках первыми</h4>
+                <p>Подпишитесь и получайте информацию о распродажах, акциях и новых поступлениях.</p>
+                <div class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Ваш email" id="store-newsletter-email" required>
+                    <button class="newsletter-button" id="store-newsletter-submit">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="subscription-benefits" style="margin-top: 1rem;">
+                    <p><i class="fas fa-check"></i> Скидка 10% на первую покупку</p>
+                    <p><i class="fas fa-check"></i> Персональные предложения</p>
+                    <p><i class="fas fa-check"></i> Ранний доступ к распродажам</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-middle">
+            <div class="payment-section">
+                <h5>Способы оплаты:</h5>
+                <div class="payment-methods-grid">
+                    <div class="payment-method">
+                        <i class="fab fa-cc-visa"></i>
+                        <span>Visa</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-cc-mastercard"></i>
+                        <span>MasterCard</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-cc-mir"></i>
+                        <span>МИР</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>СБП</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QR</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-university"></i>
+                        <span>Рассрочка</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Наличные</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Кредит</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="security-section">
+                <h5>Безопасные платежи:</h5>
+                <div class="security-badges">
+                    <div class="security-badge" title="SSL-шифрование">
+                        <i class="fas fa-lock"></i>
+                        <span>SSL</span>
+                    </div>
+                    <div class="security-badge" title="3D Secure">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>3D Secure</span>
+                    </div>
+                    <div class="security-badge" title="PCI DSS">
+                        <i class="fas fa-certificate"></i>
+                        <span>PCI DSS</span>
+                    </div>
+                    <div class="security-badge" title="Защита от мошенничества">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Fraud Protection</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="store-info">
+            <div class="info-item">
+                <i class="fas fa-certificate"></i>
+                <div>
+                    <strong>Официальный дилер</strong>
+                    <span>Прямые поставки от производителя</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-award"></i>
+                <div>
+                    <strong>Гарантия 2 года</strong>
+                    <span>Расширенная гарантия на всю технику</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-sync-alt"></i>
+                <div>
+                    <strong>Возврат 30 дней</strong>
+                    <span>Легкий возврат и обмен</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-truck"></i>
+                <div>
+                    <strong>Доставка по РФ</strong>
+                    <span>Бесплатно при заказе от 50 000 ₽</span>
+                </div>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <div>© 2023 Hegir Technologies. Все права защищены.</div>
-            <div>
-                <a href="#" style="color: var(--text-light); margin-right: 1rem;">Политика конфиденциальности</a>
-                <a href="#" style="color: var(--text-light);">Условия использования</a>
+            <div class="legal-info">
+                <p>© 2023 Hegir Store. ООО "Хегир Технолоджис". ОГРН 1234567890123, ИНН 1234567890</p>
+                <p>Юридический адрес: 123456, г. Москва, ул. Технологическая, д. 1, стр. 1</p>
+                <p>Магазин зарегистрирован в реестре Роскомнадзора за номером РР-1234567890</p>
             </div>
+            
+            <div class="footer-links">
+                <a href="privacy.html">Политика конфиденциальности</a>
+                <a href="terms.html">Публичная оферта</a>
+                <a href="return.html">Условия возврата</a>
+                <a href="warranty-terms.html">Условия гарантии</a>
+                <a href="map.html">Карта сайта</a>
+                <a href="api.html">API для разработчиков</a>
+            </div>
+            
+            <div class="age-restriction">
+                <div class="age-badge">18+</div>
+                <span>Сайт содержит информацию, не рекомендованную для лиц младше 18 лет</span>
+            </div>
+            
+            <div class="regulatory-links">
+                <a href="https://www.nalog.gov.ru/" target="_blank">ФНС России</a>
+                <a href="https://rospotrebnadzor.ru/" target="_blank">Роспотребнадзор</a>
+                <a href="https://rkn.gov.ru/" target="_blank">Роскомнадзор</a>
+                <a href="https://zakupki.gov.ru/" target="_blank">Госзакупки</a>
+            </div>
+        </div>
+        
+        <!-- Кнопки быстрого доступа -->
+        <div class="quick-access">
+            <button class="quick-btn" id="quick-chat">
+                <i class="fas fa-comments"></i>
+                <span>Чат</span>
+            </button>
+            <button class="quick-btn" id="quick-call">
+                <i class="fas fa-phone"></i>
+                <span>Позвонить</span>
+            </button>
+            <button class="quick-btn" id="quick-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Корзина</span>
+            </button>
+            <button class="quick-btn" id="quick-top">
+                <i class="fas fa-chevron-up"></i>
+                <span>Наверх</span>
+            </button>
         </div>
     </footer>
 
@@ -809,6 +1536,59 @@
             <a href="checkout.html" class="buy-btn" style="width: 100%; text-decoration: none;">
                 <i class="fas fa-shopping-bag"></i> Оформить заказ через 5post
             </a>
+        </div>
+    </div>
+
+    <!-- Модальное окно для подписки в магазине -->
+    <div class="modal" id="store-newsletter-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-gift"></i> Спасибо за подписку!</h3>
+                <button class="btn btn-secondary close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-icon" style="color: #FF9500;">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <p>Ваш промокод на скидку 10%: <strong>HEGIRWELCOME</strong></p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                    Промокод действителен в течение 30 дней на первую покупку.
+                    На ваш email отправлено письмо с деталями.
+                </p>
+                <div class="modal-actions" style="margin-top: 2rem;">
+                    <button class="btn btn-primary close-modal">Продолжить покупки</button>
+                    <a href="checkout.html" class="btn btn-secondary">Перейти к оплате</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Онлайн-чат -->
+    <div class="chat-widget" id="chat-widget">
+        <div class="chat-header">
+            <h4><i class="fas fa-comments"></i> Онлайн-чат</h4>
+            <button class="chat-minimize">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="chat-body">
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message bot">
+                    <div class="message-avatar">H</div>
+                    <div class="message-content">
+                        <div class="message-text">Здравствуйте! Чем могу помочь?</div>
+                        <div class="message-time">Только что</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введите сообщение..." id="chat-input">
+                <button id="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1352,6 +2132,186 @@
             products = newProducts;
             displayProducts('all');
         };
+
+        // =====================
+        // ФУНКЦИОНАЛ НОВОГО ФУТЕРА
+        // =====================
+
+        // Функционал подписки на рассылку в магазине
+        document.addEventListener('DOMContentLoaded', function() {
+            // Подписка на рассылку
+            const newsletterEmail = document.getElementById('store-newsletter-email');
+            const newsletterSubmit = document.getElementById('store-newsletter-submit');
+            const newsletterModal = document.getElementById('store-newsletter-modal');
+            
+            if (newsletterSubmit && newsletterEmail) {
+                newsletterSubmit.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (newsletterEmail.value && newsletterEmail.value.includes('@')) {
+                        // Показываем модальное окно
+                        newsletterModal.style.display = 'block';
+                        // Сохраняем email в localStorage
+                        localStorage.setItem('hegir_newsletter_subscribed', 'true');
+                        localStorage.setItem('hegir_newsletter_email', newsletterEmail.value);
+                        // Очищаем поле
+                        newsletterEmail.value = '';
+                        
+                        showNotification('Вы успешно подписались на рассылку!', 'success');
+                    } else {
+                        showNotification('Пожалуйста, введите корректный email', 'error');
+                    }
+                });
+                
+                newsletterEmail.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        newsletterSubmit.click();
+                    }
+                });
+            }
+            
+            // Закрытие модального окна подписки
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    newsletterModal.style.display = 'none';
+                });
+            });
+            
+            // Кнопки быстрого доступа
+            const quickChatBtn = document.getElementById('quick-chat');
+            const quickCallBtn = document.getElementById('quick-call');
+            const quickCartBtn = document.getElementById('quick-cart');
+            const quickTopBtn = document.getElementById('quick-top');
+            const chatWidget = document.getElementById('chat-widget');
+            
+            // Открытие/закрытие чата
+            if (quickChatBtn && chatWidget) {
+                quickChatBtn.addEventListener('click', function() {
+                    chatWidget.classList.toggle('active');
+                });
+                
+                // Кнопка сворачивания чата
+                const chatMinimizeBtn = chatWidget.querySelector('.chat-minimize');
+                if (chatMinimizeBtn) {
+                    chatMinimizeBtn.addEventListener('click', function() {
+                        chatWidget.classList.remove('active');
+                    });
+                }
+            }
+            
+            // Позвонить
+            if (quickCallBtn) {
+                quickCallBtn.addEventListener('click', function() {
+                    window.location.href = 'tel:88005553535';
+                });
+            }
+            
+            // Открыть корзину
+            if (quickCartBtn) {
+                quickCartBtn.addEventListener('click', function() {
+                    cartModal.classList.add('active');
+                });
+            }
+            
+            // Прокрутка наверх
+            if (quickTopBtn) {
+                quickTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // Показывать/скрывать кнопку при прокрутке
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        quickTopBtn.style.display = 'flex';
+                    } else {
+                        quickTopBtn.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Отправка сообщения в чат
+            const sendMessageBtn = document.getElementById('send-message');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            if (sendMessageBtn && chatInput) {
+                sendMessageBtn.addEventListener('click', sendChatMessage);
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendChatMessage();
+                    }
+                });
+                
+                function sendChatMessage() {
+                    const message = chatInput.value.trim();
+                    if (message) {
+                        // Добавляем сообщение пользователя
+                        const userMessage = document.createElement('div');
+                        userMessage.className = 'chat-message user';
+                        userMessage.innerHTML = `
+                            <div class="message-avatar">В</div>
+                            <div class="message-content">
+                                <div class="message-text">${message}</div>
+                                <div class="message-time">Только что</div>
+                            </div>
+                        `;
+                        chatMessages.appendChild(userMessage);
+                        
+                        // Очищаем поле ввода
+                        chatInput.value = '';
+                        
+                        // Прокручиваем вниз
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        // Имитируем ответ бота через 1 секунду
+                        setTimeout(function() {
+                            const botResponses = [
+                                'Спасибо за ваше сообщение! Наш оператор свяжется с вами в ближайшее время.',
+                                'Понятно. Уточните, пожалуйста, номер вашего заказа?',
+                                'Мы получили ваш запрос. Чем еще можем помочь?',
+                                'Благодарим за обращение! Для ускорения решения вопроса можете позвонить на горячую линию: 8-800-555-35-35.'
+                            ];
+                            
+                            const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+                            
+                            const botMessage = document.createElement('div');
+                            botMessage.className = 'chat-message bot';
+                            botMessage.innerHTML = `
+                                <div class="message-avatar">H</div>
+                                <div class="message-content">
+                                    <div class="message-text">${randomResponse}</div>
+                                    <div class="message-time">Только что</div>
+                                </div>
+                            `;
+                            chatMessages.appendChild(botMessage);
+                            
+                            // Прокручиваем вниз
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+                }
+            }
+            
+            // Переход по категориям в футере
+            const categoryLinks = document.querySelectorAll('.category-link');
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.dataset.category;
+                    const tabBtn = document.querySelector(`.tab-btn[data-category="${category}"]`);
+                    if (tabBtn) {
+                        tabBtn.click();
+                        window.scrollTo({
+                            top: document.querySelector('.category-tabs').offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
