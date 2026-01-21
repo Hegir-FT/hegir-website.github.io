@@ -1,8 +1,10 @@
-// auth.js - Система аутентификации с шифрованием
+// auth.js - Расширенная система аутентификации с ролями
 class AuthSystem {
     constructor() {
-        this.usersKey = 'hegir_users';
+        this.usersKey = 'hegir_users_encrypted';
+        this.forumDataKey = 'hegir_forum_data';
         this.currentUserKey = 'hegir_current_user';
+        this.sessionsKey = 'hegir_sessions';
         this.init();
     }
 
@@ -10,16 +12,34 @@ class AuthSystem {
     init() {
         if (!this.getUsers()) {
             this.saveUsers([]);
-            this.createAdminUser();
+            this.createDefaultUsers();
+        }
+        
+        if (!this.getForumData()) {
+            this.saveForumData({
+                categories: [],
+                topics: [],
+                posts: [],
+                reports: [],
+                bans: []
+            });
+        }
+        
+        if (!localStorage.getItem(this.sessionsKey)) {
+            localStorage.setItem(this.sessionsKey, JSON.stringify([]));
         }
     }
 
-    // Шифрование данных
-    encrypt(data) {
+    // Расширенное шифрование данных
+    encrypt(data, key = 'hegir-secret-key') {
         try {
-            // Простое шифрование для демонстрации
-            // В реальном проекте используйте более надежные методы
-            return btoa(encodeURIComponent(JSON.stringify(data)));
+            const text = JSON.stringify(data);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                const charCode = text.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                result += String.fromCharCode(charCode);
+            }
+            return btoa(result);
         } catch (error) {
             console.error('Encryption error:', error);
             return null;
@@ -27,27 +47,165 @@ class AuthSystem {
     }
 
     // Дешифрование данных
-    decrypt(encryptedData) {
+    decrypt(encryptedData, key = 'hegir-secret-key') {
         try {
-            const decrypted = decodeURIComponent(atob(encryptedData));
-            return JSON.parse(decrypted);
+            const decoded = atob(encryptedData);
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                const charCode = decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                result += String.fromCharCode(charCode);
+            }
+            return JSON.parse(result);
         } catch (error) {
             console.error('Decryption error:', error);
             return null;
         }
     }
 
-    // Хеширование пароля
-    hashPassword(password) {
-        // Простое хеширование для демонстрации
-        // В реальном проекте используйте bcrypt или подобное
+    // Хеширование пароля с солью
+    hashPassword(password, salt = 'hegir-salt-2023') {
+        const str = password + salt;
         let hash = 0;
-        for (let i = 0; i < password.length; i++) {
-            const char = password.charCodeAt(i);
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;
         }
-        return hash.toString(16);
+        // Добавляем дополнительный хеш для сложности
+        const timestamp = Date.now().toString();
+        let finalHash = '';
+        for (let i = 0; i < timestamp.length; i++) {
+            finalHash += (hash ^ timestamp.charCodeAt(i)).toString(16);
+        }
+        return finalHash.slice(0, 32);
+    }
+
+    // Создание сессии
+    createSession(user) {
+        const sessionId = this.generateSessionId();
+        const session = {
+            id: sessionId,
+            userId: user.id,
+            username: user.username,
+            role: user.role,
+            createdAt: new Date().toISOString(),
+            lastActivity: new Date().toISOString(),
+            ip: 'localhost', // В реальном приложении получаем IP
+            userAgent: navigator.userAgent,
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 дней
+        };
+
+        const sessions = JSON.parse(localStorage.getItem(this.sessionsKey)) || [];
+        sessions.push(session);
+        localStorage.setItem(this.sessionsKey, JSON.stringify(sessions));
+
+        // Устанавливаем cookie с sessionId
+        document.cookie = `hegir_session=${sessionId}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
+
+        return sessionId;
+    }
+
+    // Генерация ID сессии
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // Валидация сессии
+    validateSession(sessionId) {
+        const sessions = JSON.parse(localStorage.getItem(this.sessionsKey)) || [];
+        const session = sessions.find(s => s.id === sessionId);
+        
+        if (!session) return false;
+        
+        // Проверяем срок действия
+        if (new Date(session.expiresAt) < new Date()) {
+            this.removeSession(sessionId);
+            return false;
+        }
+        
+        // Обновляем время последней активности
+        session.lastActivity = new Date().toISOString();
+        localStorage.setItem(this.sessionsKey, JSON.stringify(sessions));
+        
+        return session;
+    }
+
+    // Удаление сессии
+    removeSession(sessionId) {
+        const sessions = JSON.parse(localStorage.getItem(this.sessionsKey)) || [];
+        const filteredSessions = sessions.filter(s => s.id !== sessionId);
+        localStorage.setItem(this.sessionsKey, JSON.stringify(filteredSessions));
+        
+        // Удаляем cookie
+        document.cookie = `hegir_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    }
+
+    // Создание пользователей по умолчанию
+    createDefaultUsers() {
+        const defaultUsers = [
+            {
+                id: 1,
+                username: 'admin',
+                email: 'admin@hegir.ru',
+                password: this.hashPassword('admin123'),
+                firstName: 'Администратор',
+                lastName: 'Hegir',
+                phone: '+7 (999) 000-00-00',
+                role: 'admin',
+                createdAt: new Date().toISOString(),
+                lastLogin: null,
+                isActive: true,
+                avatar: null,
+                signature: 'Главный администратор форума',
+                reputation: 1000,
+                postsCount: 0,
+                isBanned: false,
+                banReason: null,
+                banExpires: null
+            },
+            {
+                id: 2,
+                username: 'moderator',
+                email: 'moderator@hegir.ru',
+                password: this.hashPassword('mod123'),
+                firstName: 'Модератор',
+                lastName: 'Hegir',
+                phone: '+7 (999) 000-00-01',
+                role: 'moderator',
+                createdAt: new Date().toISOString(),
+                lastLogin: null,
+                isActive: true,
+                avatar: null,
+                signature: 'Модератор форума',
+                reputation: 500,
+                postsCount: 0,
+                isBanned: false,
+                banReason: null,
+                banExpires: null
+            },
+            {
+                id: 3,
+                username: 'user',
+                email: 'user@hegir.ru',
+                password: this.hashPassword('user123'),
+                firstName: 'Пользователь',
+                lastName: 'Тестовый',
+                phone: '+7 (999) 000-00-02',
+                role: 'user',
+                createdAt: new Date().toISOString(),
+                lastLogin: null,
+                isActive: true,
+                avatar: null,
+                signature: 'Новый пользователь',
+                reputation: 10,
+                postsCount: 0,
+                isBanned: false,
+                banReason: null,
+                banExpires: null
+            }
+        ];
+
+        this.saveUsers(defaultUsers);
     }
 
     // Получение пользователей
@@ -67,27 +225,20 @@ class AuthSystem {
         return false;
     }
 
-    // Создание пользователя-администратора по умолчанию
-    createAdminUser() {
-        const adminUser = {
-            id: 1,
-            username: 'admin',
-            email: 'admin@hegir.ru',
-            password: this.hashPassword('admin123'),
-            firstName: 'Администратор',
-            lastName: 'Hegir',
-            phone: '+7 (999) 000-00-00',
-            role: 'admin',
-            createdAt: new Date().toISOString(),
-            isActive: true
-        };
-
-        const users = this.getUsers() || [];
-        users.push(adminUser);
-        this.saveUsers(users);
+    // Получение данных форума
+    getForumData() {
+        const data = localStorage.getItem(this.forumDataKey);
+        if (!data) return null;
+        return JSON.parse(data);
     }
 
-    // Регистрация нового пользователя
+    // Сохранение данных форума
+    saveForumData(data) {
+        localStorage.setItem(this.forumDataKey, JSON.stringify(data));
+        return true;
+    }
+
+    // Регистрация пользователя
     register(userData) {
         const users = this.getUsers() || [];
         
@@ -113,20 +264,32 @@ class AuthSystem {
             phone: userData.phone || '',
             role: 'user',
             createdAt: new Date().toISOString(),
+            lastLogin: null,
             isActive: true,
-            cart: [],
-            orders: [],
-            addresses: []
+            avatar: userData.avatar || null,
+            signature: userData.signature || 'Новый участник форума',
+            reputation: 10,
+            postsCount: 0,
+            isBanned: false,
+            banReason: null,
+            banExpires: null,
+            notifications: [],
+            messages: [],
+            subscribedTopics: [],
+            ignoreList: []
         };
 
         users.push(newUser);
         const saved = this.saveUsers(users);
         
         if (saved) {
-            this.setCurrentUser(newUser);
+            const sessionId = this.createSession(newUser);
+            this.setCurrentUser(newUser, sessionId);
+            
             return {
                 success: true,
                 user: newUser,
+                sessionId: sessionId,
                 message: 'Регистрация успешна'
             };
         } else {
@@ -145,14 +308,22 @@ class AuthSystem {
         const user = users.find(user => 
             (user.email === credentials.email || user.username === credentials.email) &&
             user.password === hashedPassword &&
-            user.isActive
+            user.isActive &&
+            !user.isBanned
         );
         
         if (user) {
-            this.setCurrentUser(user);
+            // Обновляем время последнего входа
+            user.lastLogin = new Date().toISOString();
+            this.saveUsers(users);
+            
+            const sessionId = this.createSession(user);
+            this.setCurrentUser(user, sessionId);
+            
             return {
                 success: true,
                 user: user,
+                sessionId: sessionId,
                 message: 'Вход выполнен успешно'
             };
         } else {
@@ -164,7 +335,7 @@ class AuthSystem {
     }
 
     // Установка текущего пользователя
-    setCurrentUser(user) {
+    setCurrentUser(user, sessionId = null) {
         const userData = {
             id: user.id,
             username: user.username,
@@ -173,7 +344,11 @@ class AuthSystem {
             lastName: user.lastName,
             phone: user.phone,
             role: user.role,
-            cart: user.cart || []
+            avatar: user.avatar,
+            signature: user.signature,
+            reputation: user.reputation,
+            postsCount: user.postsCount,
+            sessionId: sessionId
         };
         
         localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
@@ -183,11 +358,28 @@ class AuthSystem {
     // Получение текущего пользователя
     getCurrentUser() {
         const userData = localStorage.getItem(this.currentUserKey);
-        return userData ? JSON.parse(userData) : null;
+        if (!userData) return null;
+        
+        const parsed = JSON.parse(userData);
+        
+        // Проверяем валидность сессии
+        if (parsed.sessionId) {
+            const session = this.validateSession(parsed.sessionId);
+            if (!session) {
+                this.logout();
+                return null;
+            }
+        }
+        
+        return parsed;
     }
 
     // Выход пользователя
     logout() {
+        const currentUser = this.getCurrentUser();
+        if (currentUser && currentUser.sessionId) {
+            this.removeSession(currentUser.sessionId);
+        }
         localStorage.removeItem(this.currentUserKey);
         return {
             success: true,
@@ -195,80 +387,33 @@ class AuthSystem {
         };
     }
 
-    // Обновление данных пользователя
-    updateUser(userId, updates) {
-        const users = this.getUsers() || [];
-        const userIndex = users.findIndex(user => user.id === userId);
+    // Проверка ролей
+    hasRole(requiredRole) {
+        const user = this.getCurrentUser();
+        if (!user) return false;
         
-        if (userIndex === -1) {
-            return {
-                success: false,
-                message: 'Пользователь не найден'
-            };
-        }
-
-        // Обновляем данные
-        users[userIndex] = { ...users[userIndex], ...updates };
+        const roles = ['user', 'moderator', 'admin'];
+        const userRoleIndex = roles.indexOf(user.role);
+        const requiredRoleIndex = roles.indexOf(requiredRole);
         
-        // Если обновляем пароль, хешируем его
-        if (updates.password) {
-            users[userIndex].password = this.hashPassword(updates.password);
-        }
-
-        const saved = this.saveUsers(users);
-        
-        if (saved) {
-            // Обновляем текущую сессию если это текущий пользователь
-            const currentUser = this.getCurrentUser();
-            if (currentUser && currentUser.id === userId) {
-                this.setCurrentUser(users[userIndex]);
-            }
-            
-            return {
-                success: true,
-                user: users[userIndex],
-                message: 'Данные обновлены'
-            };
-        } else {
-            return {
-                success: false,
-                message: 'Ошибка сохранения данных'
-            };
-        }
+        return userRoleIndex >= requiredRoleIndex;
     }
 
-    // Удаление пользователя (администратор)
-    deleteUser(userId) {
-        const currentUser = this.getCurrentUser();
-        if (!currentUser || currentUser.role !== 'admin') {
-            return {
-                success: false,
-                message: 'Недостаточно прав'
-            };
-        }
-
-        const users = this.getUsers() || [];
-        const filteredUsers = users.filter(user => user.id !== userId);
-        
-        const saved = this.saveUsers(filteredUsers);
-        
-        if (saved) {
-            return {
-                success: true,
-                message: 'Пользователь удален'
-            };
-        } else {
-            return {
-                success: false,
-                message: 'Ошибка удаления пользователя'
-            };
-        }
+    isAdmin() {
+        return this.hasRole('admin');
     }
 
-    // Получение всех пользователей (администратор)
+    isModerator() {
+        return this.hasRole('moderator');
+    }
+
+    isUser() {
+        return this.hasRole('user');
+    }
+
+    // Управление пользователями (для администраторов)
     getAllUsers() {
-        const currentUser = this.getCurrentUser();
-        if (!currentUser || currentUser.role !== 'admin') {
+        if (!this.isAdmin()) {
             return {
                 success: false,
                 message: 'Недостаточно прав'
@@ -286,75 +431,184 @@ class AuthSystem {
                 lastName: user.lastName,
                 role: user.role,
                 createdAt: user.createdAt,
+                lastLogin: user.lastLogin,
                 isActive: user.isActive,
-                ordersCount: user.orders ? user.orders.length : 0
+                isBanned: user.isBanned,
+                banReason: user.banReason,
+                banExpires: user.banExpires,
+                reputation: user.reputation,
+                postsCount: user.postsCount,
+                signature: user.signature
             }))
         };
     }
 
-    // Проверка роли администратора
-    isAdmin() {
-        const user = this.getCurrentUser();
-        return user && user.role === 'admin';
-    }
-
-    // Добавление товара в корзину пользователя
-    addToCart(productId, quantity = 1) {
-        const user = this.getCurrentUser();
-        if (!user) return false;
-
-        const users = this.getUsers() || [];
-        const userIndex = users.findIndex(u => u.id === user.id);
-        
-        if (userIndex === -1) return false;
-
-        // Инициализируем корзину если её нет
-        if (!users[userIndex].cart) {
-            users[userIndex].cart = [];
+    // Блокировка пользователя
+    banUser(userId, reason, days = 7) {
+        if (!this.isAdmin() && !this.isModerator()) {
+            return {
+                success: false,
+                message: 'Недостаточно прав'
+            };
         }
 
-        // Проверяем, есть ли товар уже в корзине
-        const existingItemIndex = users[userIndex].cart.findIndex(item => item.id === productId);
+        const users = this.getUsers() || [];
+        const userIndex = users.findIndex(user => user.id === userId);
         
-        if (existingItemIndex !== -1) {
-            // Обновляем количество
-            users[userIndex].cart[existingItemIndex].quantity += quantity;
+        if (userIndex === -1) {
+            return {
+                success: false,
+                message: 'Пользователь не найден'
+            };
+        }
+
+        const moderator = this.getCurrentUser();
+        users[userIndex].isBanned = true;
+        users[userIndex].banReason = reason;
+        users[userIndex].banExpires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+        
+        // Записываем в историю банов
+        const forumData = this.getForumData();
+        forumData.bans.push({
+            id: Date.now(),
+            userId: userId,
+            moderatorId: moderator.id,
+            reason: reason,
+            expiresAt: users[userIndex].banExpires,
+            createdAt: new Date().toISOString()
+        });
+        this.saveForumData(forumData);
+
+        const saved = this.saveUsers(users);
+        
+        if (saved) {
+            return {
+                success: true,
+                message: 'Пользователь заблокирован'
+            };
         } else {
-            // Добавляем новый товар
-            users[userIndex].cart.push({
-                id: productId,
-                quantity: quantity,
-                addedAt: new Date().toISOString()
-            });
+            return {
+                success: false,
+                message: 'Ошибка блокировки пользователя'
+            };
         }
-
-        this.saveUsers(users);
-        
-        // Обновляем текущую сессию
-        const updatedUser = users[userIndex];
-        this.setCurrentUser(updatedUser);
-        
-        return true;
     }
 
-    // Очистка корзины
-    clearCart() {
-        const user = this.getCurrentUser();
-        if (!user) return false;
+    // Разблокировка пользователя
+    unbanUser(userId) {
+        if (!this.isAdmin() && !this.isModerator()) {
+            return {
+                success: false,
+                message: 'Недостаточно прав'
+            };
+        }
 
         const users = this.getUsers() || [];
-        const userIndex = users.findIndex(u => u.id === user.id);
+        const userIndex = users.findIndex(user => user.id === userId);
         
-        if (userIndex === -1) return false;
+        if (userIndex === -1) {
+            return {
+                success: false,
+                message: 'Пользователь не найден'
+            };
+        }
 
-        users[userIndex].cart = [];
-        this.saveUsers(users);
+        users[userIndex].isBanned = false;
+        users[userIndex].banReason = null;
+        users[userIndex].banExpires = null;
+
+        const saved = this.saveUsers(users);
         
-        // Обновляем текущую сессию
-        const updatedUser = users[userIndex];
-        this.setCurrentUser(updatedUser);
+        if (saved) {
+            return {
+                success: true,
+                message: 'Пользователь разблокирован'
+            };
+        } else {
+            return {
+                success: false,
+                message: 'Ошибка разблокировки пользователя'
+            };
+        }
+    }
+
+    // Изменение роли пользователя
+    changeUserRole(userId, newRole) {
+        if (!this.isAdmin()) {
+            return {
+                success: false,
+                message: 'Только администратор может изменять роли'
+            };
+        }
+
+        const users = this.getUsers() || [];
+        const userIndex = users.findIndex(user => user.id === userId);
         
-        return true;
+        if (userIndex === -1) {
+            return {
+                success: false,
+                message: 'Пользователь не найден'
+            };
+        }
+
+        users[userIndex].role = newRole;
+        const saved = this.saveUsers(users);
+        
+        if (saved) {
+            return {
+                success: true,
+                message: `Роль пользователя изменена на ${newRole}`
+            };
+        } else {
+            return {
+                success: false,
+                message: 'Ошибка изменения роли'
+            };
+        }
+    }
+
+    // Получение статистики пользователя
+    getUserStats(userId) {
+        const user = this.getUsers().find(u => u.id === userId);
+        const forumData = this.getForumData();
+        
+        if (!user) {
+            return null;
+        }
+
+        const userTopics = forumData.topics.filter(t => t.authorId === userId);
+        const userPosts = forumData.posts.filter(p => p.authorId === userId);
+        
+        return {
+            user: {
+                username: user.username,
+                role: user.role,
+                reputation: user.reputation,
+                postsCount: user.postsCount,
+                createdAt: user.createdAt,
+                lastLogin: user.lastLogin
+            },
+            stats: {
+                topicsCount: userTopics.length,
+                postsCount: userPosts.length,
+                totalLikes: userPosts.reduce((sum, post) => sum + (post.likes || 0), 0),
+                totalViews: userTopics.reduce((sum, topic) => sum + (topic.views || 0), 0),
+                averagePostsPerDay: this.calculateAveragePosts(userPosts)
+            },
+            recentActivity: userPosts
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 10)
+        };
+    }
+
+    calculateAveragePosts(posts) {
+        if (posts.length === 0) return 0;
+        
+        const firstPostDate = new Date(posts[posts.length - 1].createdAt);
+        const lastPostDate = new Date(posts[0].createdAt);
+        const daysDiff = Math.max(1, (lastPostDate - firstPostDate) / (1000 * 60 * 60 * 24));
+        
+        return (posts.length / daysDiff).toFixed(2);
     }
 }
 
