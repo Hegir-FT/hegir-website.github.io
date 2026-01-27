@@ -70,10 +70,47 @@
             color: var(--text-light);
             font-size: 1.2rem;
             transition: var(--transition);
+            text-decoration: none;
         }
         
         .nav-icons a:hover {
             color: var(--accent-primary);
+        }
+        
+        /* Кнопки авторизации */
+        #auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 68, 68, 0.1);
+            color: #FF4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            border-color: #FF4444;
         }
         
         /* Hero Section */
@@ -397,6 +434,16 @@
             <a href="severity.html" title="Ноутбуки"><i class="fas fa-laptop"></i></a>
             <a href="phtalex.html" title="Смартфоны"><i class="fas fa-mobile-alt"></i></a>
             <a href="flux.html" title="VR очки"><i class="fas fa-vr-cardboard"></i></a>
+            
+            <!-- Кнопка форума -->
+            <a href="forum.html" title="Форум" id="forum-btn">
+                <i class="fas fa-comments"></i>
+            </a>
+            
+            <!-- Кнопки авторизации -->
+            <div id="auth-buttons">
+                <!-- Будет заполнено JavaScript -->
+            </div>
         </div>
     </header>
 
@@ -637,6 +684,9 @@
         <p style="margin-top: 1rem; opacity: 0.7;">Видеокарты Hegir NEXUS — соединяя реальности</p>
     </footer>
 
+    <!-- Подключаем auth.js -->
+    <script src="auth.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animate series cards on scroll
