@@ -105,14 +105,96 @@
             align-items: center;
         }
         
-        .nav-icons i {
+        .nav-icons i, .nav-icons a {
             font-size: 1.2rem;
             cursor: pointer;
             transition: var(--transition);
+            color: var(--text-light);
+            text-decoration: none;
         }
         
-        .nav-icons i:hover {
+        .nav-icons i:hover, .nav-icons a:hover {
             color: var(--accent-graphics);
+        }
+        
+        /* Обновленный контейнер для кнопок авторизации */
+        #auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, var(--accent-processor), var(--accent-graphics));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 68, 68, 0.1);
+            color: #FF4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            border-color: #FF4444;
+        }
+        
+        /* Уведомления */
+        .auth-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .auth-notification-success {
+            background: #00CC88;
+        }
+        
+        .auth-notification-error {
+            background: #FF4444;
+        }
+        
+        .auth-notification-warning {
+            background: #FF9500;
+        }
+        
+        .auth-notification-info {
+            background: #0066FF;
         }
         
         /* Hero Section */
@@ -697,6 +779,10 @@
                 gap: 1rem;
                 text-align: center;
             }
+            
+            .user-name {
+                display: none !important;
+            }
         }
         
         @media (max-width: 576px) {
@@ -723,439 +809,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
-        /* Стили для нового футера */
-        .footer-middle {
-            padding: 2rem 5%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-        
-        .payment-methods, .delivery-partners {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .payment-methods h5, .delivery-partners h5 {
-            margin-bottom: 1rem;
-            color: var(--text-white);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        .payment-icons {
-            display: flex;
-            gap: 1rem;
-            font-size: 1.8rem;
-            color: var(--text-light);
-        }
-        
-        .payment-icons i {
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        
-        .payment-icons i:hover {
-            color: var(--accent-graphics);
-            transform: translateY(-2px);
-        }
-        
-        .delivery-logos {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .delivery-logo {
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .delivery-logo:hover {
-            background: rgba(0, 102, 255, 0.1);
-            border-color: var(--accent-graphics);
-            color: var(--accent-graphics);
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent-graphics);
-        }
-        
-        .footer-disclaimer {
-            font-size: 0.8rem;
-            opacity: 0.6;
-            margin-top: 0.5rem;
-            max-width: 800px;
-            line-height: 1.4;
-        }
-        
-        .country-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .country-selector select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-white);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            outline: none;
-        }
-        
-        .scroll-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, var(--accent-processor), var(--accent-graphics));
-            color: var(--bg-dark);
-            border: none;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: var(--transition);
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-        }
-        
-        .scroll-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
-        }
-        
-        .scroll-to-top.show {
-            display: flex;
-        }
-        
-        /* Стили для cookie соглашения */
-        .cookie-consent {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            padding: 1.5rem 5%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 2000;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .cookie-consent.show {
-            transform: translateY(0);
-        }
-        
-        .cookie-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .cookie-text {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .cookie-text h4 {
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-        
-        .cookie-text p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .cookie-actions {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        /* Switch для настроек cookies */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: .4s;
-            border-radius: 24px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--accent-graphics);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        /* Настройки cookies */
-        .cookie-setting {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        
-        .setting-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        .setting-desc {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        /* Страны */
-        .country-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        
-        .country-option {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .country-option:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .country-option.selected {
-            border-color: var(--accent-graphics);
-            background: rgba(0, 102, 255, 0.1);
-        }
-        
-        .country-flag {
-            font-size: 1.5rem;
-        }
-        
-        .country-name {
-            font-weight: 600;
-            color: var(--text-white);
-        }
-        
-        .country-details {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        /* App badges */
-        .app-badges {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .app-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .app-badge:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .app-badge i {
-            font-size: 1.2rem;
-        }
-        
-        /* Контактная информация */
-        .contact-info p {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        /* Модальные окна */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-        }
-        
-        .modal-content {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            width: 90%;
-            max-width: 800px;
-        }
-        
-        .modal-header {
-            padding: 1.5rem;
-            background: linear-gradient(90deg, var(--accent-processor), var(--accent-graphics));
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .success-icon {
-            font-size: 3rem;
-            color: #00CC88;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .footer-middle {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .country-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .cookie-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .cookie-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .scroll-to-top {
-                bottom: 1rem;
-                right: 1rem;
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .payment-icons {
-                font-size: 1.5rem;
-                gap: 0.5rem;
-            }
-            
-            .delivery-logos {
-                gap: 0.5rem;
-            }
-            
-            .delivery-logo {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.8rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1174,6 +827,17 @@
         <div class="nav-icons">
             <i class="fas fa-search" id="search-btn"></i>
             <i class="fas fa-shopping-bag" id="cart-btn"></i>
+            
+            <!-- Кнопка форума -->
+            <a href="forum.html" title="Форум" id="forum-btn">
+                <i class="fas fa-comments"></i>
+            </a>
+            
+            <!-- Кнопки авторизации -->
+            <div id="auth-buttons">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+            
             <div class="mobile-menu-btn" id="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </div>
@@ -1387,16 +1051,6 @@
                         <i class="fab fa-vk"></i>
                     </a>
                 </div>
-                <div class="app-badges" style="margin-top: 1.5rem;">
-                    <a href="#" class="app-badge" data-platform="ios">
-                        <i class="fab fa-apple"></i>
-                        <span>App Store</span>
-                    </a>
-                    <a href="#" class="app-badge" data-platform="android">
-                        <i class="fab fa-google-play"></i>
-                        <span>Google Play</span>
-                    </a>
-                </div>
             </div>
             
             <div class="footer-column">
@@ -1407,8 +1061,6 @@
                     <li><a href="severity.html">Ноутбуки SEVERITY</a></li>
                     <li><a href="phtalex.html">Смартфоны PHTALEX</a></li>
                     <li><a href="flux.html">VR очки FLUX</a></li>
-                    <li><a href="accessories.html">Аксессуары</a></li>
-                    <li><a href="software.html">Программное обеспечение</a></li>
                 </ul>
             </div>
             
@@ -1419,9 +1071,6 @@
                     <li><a href="careers.html">Карьера</a></li>
                     <li><a href="investors.html">Инвесторам</a></li>
                     <li><a href="press.html">Пресс-центр</a></li>
-                    <li><a href="partners.html">Партнерам</a></li>
-                    <li><a href="sustainability.html">Устойчивое развитие</a></li>
-                    <li><a href="ethics.html">Этика и соответствие</a></li>
                 </ul>
             </div>
             
@@ -1430,269 +1079,23 @@
                 <ul>
                     <li><a href="support.html">Центр поддержки</a></li>
                     <li><a href="warranty.html">Гарантия и сервис</a></li>
-                    <li><a href="repair.html">Ремонт</a></li>
-                    <li><a href="drivers.html">Драйверы и ПО</a></li>
-                    <li><a href="manuals.html">Руководства</a></li>
                     <li><a href="contact.html">Контакты</a></li>
-                    <li><a href="status.html">Статус сервисов</a></li>
+                    <li><a href="forum.html">Форум сообщества</a></li>
                 </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4><i class="fas fa-newspaper"></i> Будьте в курсе</h4>
-                <p>Подпишитесь на рассылку о новинках, скидках и технологиях Hegir.</p>
-                <div class="newsletter-form">
-                    <input type="email" class="newsletter-input" placeholder="Ваш email" id="newsletter-email" required>
-                    <button class="newsletter-button" id="newsletter-submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="newsletter-consent" style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
-                    <input type="checkbox" id="newsletter-consent" checked>
-                    <label for="newsletter-consent">Я согласен получать новости и рекламные сообщения</label>
-                </div>
-                <div class="contact-info" style="margin-top: 1.5rem;">
-                    <p><i class="fas fa-phone"></i> 8-800-555-35-35</p>
-                    <p><i class="fas fa-envelope"></i> info@hegir.ru</p>
-                    <p><i class="fas fa-clock"></i> Пн-Пт: 9:00-21:00, Сб-Вс: 10:00-18:00</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-middle">
-            <div class="payment-methods">
-                <h5>Принимаем к оплате:</h5>
-                <div class="payment-icons">
-                    <i class="fab fa-cc-visa" title="Visa"></i>
-                    <i class="fab fa-cc-mastercard" title="MasterCard"></i>
-                    <i class="fab fa-cc-amex" title="American Express"></i>
-                    <i class="fab fa-cc-mir" title="МИР"></i>
-                    <i class="fas fa-mobile-alt" title="СБП"></i>
-                    <i class="fas fa-qrcode" title="QR-код"></i>
-                    <i class="fas fa-money-bill-wave" title="Наличные"></i>
-                </div>
-            </div>
-            
-            <div class="delivery-partners">
-                <h5>Партнеры доставки:</h5>
-                <div class="delivery-logos">
-                    <span class="delivery-logo" title="5post">5POST</span>
-                    <span class="delivery-logo" title="СДЭК">CDEK</span>
-                    <span class="delivery-logo" title="Boxberry">Boxberry</span>
-                    <span class="delivery-logo" title="Почта России">Почта России</span>
-                    <span class="delivery-logo" title="DHL">DHL</span>
-                </div>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <div class="footer-links">
-                <a href="privacy.html">Политика конфиденциальности</a>
-                <a href="terms.html">Условия использования</a>
-                <a href="cookies.html">Политика cookies</a>
-                <a href="sitemap.html">Карта сайта</a>
-                <a href="accessibility.html">Доступность</a>
-            </div>
-            
             <div class="copyright">
                 <p>© 2023 Hegir Technologies. Все права защищены.</p>
-                <p class="footer-disclaimer">
-                    Все товарные знаки являются собственностью их правообладателей.
-                    Цены и характеристики товаров могут изменяться. Изображения товаров могут отличаться от оригинала.
-                </p>
-            </div>
-            
-            <div class="country-selector">
-                <i class="fas fa-globe"></i>
-                <select id="country-select">
-                    <option value="ru" selected>Россия</option>
-                    <option value="kz">Казахстан</option>
-                    <option value="by">Беларусь</option>
-                    <option value="eu">Европа</option>
-                    <option value="us">США</option>
-                    <option value="cn">Китай</option>
-                </select>
+                <p style="margin-top: 0.5rem; opacity: 0.7;">Единая экосистема. Бесшовный опыт.</p>
             </div>
         </div>
-        
-        <!-- Кнопка "Наверх" -->
-        <button class="scroll-to-top" id="scroll-to-top">
-            <i class="fas fa-chevron-up"></i>
-        </button>
     </footer>
 
-    <!-- Модальное окно для подписки -->
-    <div class="modal" id="newsletter-modal" style="display: none;">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="modal-header">
-                <h3>Спасибо за подписку!</h3>
-                <button class="btn btn-secondary close-modal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <p>На ваш email отправлено письмо с подтверждением подписки.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
-                    Вы будете получать новости о продуктах Hegir, эксклюзивные предложения и приглашения на мероприятия.
-                </p>
-                <div class="modal-actions" style="margin-top: 2rem;">
-                    <button class="btn btn-primary close-modal">Продолжить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно выбора страны -->
-    <div class="modal" id="country-modal" style="display: none;">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3><i class="fas fa-globe"></i> Выберите ваш регион</h3>
-                <button class="btn btn-secondary close-modal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="country-grid">
-                    <div class="country-option selected" data-country="ru">
-                        <div class="country-flag">🇷🇺</div>
-                        <div class="country-info">
-                            <div class="country-name">Россия</div>
-                            <div class="country-details">Русский язык • ₽ Рубль</div>
-                        </div>
-                    </div>
-                    <div class="country-option" data-country="kz">
-                        <div class="country-flag">🇰🇿</div>
-                        <div class="country-info">
-                            <div class="country-name">Казахстан</div>
-                            <div class="country-details">Русский язык • ₸ Тенге</div>
-                        </div>
-                    </div>
-                    <div class="country-option" data-country="by">
-                        <div class="country-flag">🇧🇾</div>
-                        <div class="country-info">
-                            <div class="country-name">Беларусь</div>
-                            <div class="country-details">Русский язык • Br Рубль</div>
-                        </div>
-                    </div>
-                    <div class="country-option" data-country="eu">
-                        <div class="country-flag">🇪🇺</div>
-                        <div class="country-info">
-                            <div class="country-name">Европа</div>
-                            <div class="country-details">English • € Euro</div>
-                        </div>
-                    </div>
-                    <div class="country-option" data-country="us">
-                        <div class="country-flag">🇺🇸</div>
-                        <div class="country-info">
-                            <div class="country-name">США</div>
-                            <div class="country-details">English • $ USD</div>
-                        </div>
-                    </div>
-                    <div class="country-option" data-country="cn">
-                        <div class="country-flag">🇨🇳</div>
-                        <div class="country-info">
-                            <div class="country-name">Китай</div>
-                            <div class="country-details">中文 • ¥ Yuan</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-actions" style="margin-top: 2rem; display: flex; justify-content: space-between;">
-                    <button class="btn btn-secondary" id="remember-country">
-                        <i class="fas fa-save"></i> Запомнить выбор
-                    </button>
-                    <button class="btn btn-primary close-modal">Применить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cookie соглашение -->
-    <div class="cookie-consent" id="cookie-consent">
-        <div class="cookie-content">
-            <div class="cookie-text">
-                <h4><i class="fas fa-cookie-bite"></i> Мы используем cookies</h4>
-                <p>Мы используем файлы cookie для улучшения работы сайта, персонализации контента и анализа трафика.</p>
-            </div>
-            <div class="cookie-actions">
-                <button class="btn btn-secondary" id="cookie-settings">
-                    <i class="fas fa-cog"></i> Настройки
-                </button>
-                <button class="btn btn-primary" id="accept-cookies">
-                    <i class="fas fa-check"></i> Принять все
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Настройки cookies -->
-    <div class="modal" id="cookie-settings-modal" style="display: none;">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3><i class="fas fa-cookie-bite"></i> Настройки cookies</h3>
-                <button class="btn btn-secondary close-modal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="cookie-setting">
-                    <div class="setting-header">
-                        <h4>Обязательные cookies</h4>
-                        <label class="switch">
-                            <input type="checkbox" checked disabled>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <p class="setting-desc">Необходимы для работы сайта. Не могут быть отключены.</p>
-                </div>
-                
-                <div class="cookie-setting">
-                    <div class="setting-header">
-                        <h4>Аналитические cookies</h4>
-                        <label class="switch">
-                            <input type="checkbox" id="analytics-cookies" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <p class="setting-desc">Помогают нам улучшать сайт, собирая информацию об использовании.</p>
-                </div>
-                
-                <div class="cookie-setting">
-                    <div class="setting-header">
-                        <h4>Рекламные cookies</h4>
-                        <label class="switch">
-                            <input type="checkbox" id="marketing-cookies">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <p class="setting-desc">Используются для показа релевантной рекламы.</p>
-                </div>
-                
-                <div class="cookie-setting">
-                    <div class="setting-header">
-                        <h4>Функциональные cookies</h4>
-                        <label class="switch">
-                            <input type="checkbox" id="functional-cookies" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <p class="setting-desc">Запоминают ваши настройки и предпочтения.</p>
-                </div>
-                
-                <div class="modal-actions" style="margin-top: 2rem; display: flex; justify-content: space-between;">
-                    <button class="btn btn-secondary" id="reject-cookies">
-                        <i class="fas fa-times"></i> Отклонить все
-                    </button>
-                    <button class="btn btn-primary" id="save-cookie-settings">
-                        <i class="fas fa-save"></i> Сохранить настройки
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Подключаем скрипты -->
+    <script src="auth.js"></script>
+    
     <script>
         // Network animation for hero background
         function createNetworkAnimation() {
@@ -1899,65 +1302,13 @@
                 });
             }
             
-            // Cart button - открытие store.html
+            // Cart button
             const cartBtn = document.getElementById('cart-btn');
             if (cartBtn) {
                 cartBtn.addEventListener('click', function() {
-                    window.location.href = 'store.html';
+                    alert('Корзина будет доступна в полной версии сайта');
                 });
             }
-            
-            // Вспомогательная функция для показа уведомлений
-            function showNotification(message, type = 'success') {
-                // Создаем временное уведомление
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'}"></i>
-                        <span>${message}</span>
-                    </div>
-                `;
-                
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    padding: 1rem 1.5rem;
-                    border-radius: 8px;
-                    background: var(--card-bg);
-                    border-left: 4px solid ${type === 'success' ? '#00CC88' : type === 'error' ? '#FF4444' : '#FF9500'};
-                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                    z-index: 3000;
-                    transform: translateX(120%);
-                    transition: transform 0.3s ease;
-                    max-width: 300px;
-                `;
-                
-                document.body.appendChild(notification);
-                
-                // Анимация появления
-                setTimeout(() => {
-                    notification.style.transform = 'translateX(0)';
-                }, 10);
-                
-                // Автоматическое скрытие через 3 секунды
-                setTimeout(() => {
-                    notification.style.transform = 'translateX(120%)';
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 300);
-                }, 3000);
-            }
-            
-            // Social links уже работают через href в HTML
-            // Проверяем и удаляем старые обработчики если нужно
-            document.querySelectorAll('.social-icons a').forEach(link => {
-                link.removeAttribute('onclick');
-                link.onclick = null;
-            });
         }
         
         // Initialize everything when page loads
@@ -2047,294 +1398,6 @@
             heroButtons.style.opacity = '0';
             heroButtons.style.transform = 'translateY(20px)';
             heroButtons.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        });
-
-        // =====================
-        // ФУНКЦИОНАЛ НОВОГО ФУТЕРА
-        // =====================
-
-        // Функционал нового футера
-        document.addEventListener('DOMContentLoaded', function() {
-            // Подписка на рассылку (обновленная)
-            const newsletterEmail = document.getElementById('newsletter-email');
-            const newsletterSubmit = document.getElementById('newsletter-submit');
-            const newsletterConsent = document.getElementById('newsletter-consent');
-            const newsletterModal = document.getElementById('newsletter-modal');
-            
-            if (newsletterSubmit && newsletterEmail) {
-                newsletterSubmit.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const email = newsletterEmail.value.trim();
-                    
-                    if (!email) {
-                        alert('Пожалуйста, введите ваш email адрес');
-                        return;
-                    }
-                    
-                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                        alert('Пожалуйста, введите корректный email адрес');
-                        return;
-                    }
-                    
-                    if (!newsletterConsent.checked) {
-                        alert('Для подписки необходимо согласие на получение рассылки');
-                        return;
-                    }
-                    
-                    // Имитация отправки
-                    newsletterSubmit.disabled = true;
-                    const originalHTML = newsletterSubmit.innerHTML;
-                    newsletterSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                    
-                    setTimeout(() => {
-                        // Показываем модальное окно
-                        newsletterModal.style.display = 'flex';
-                        
-                        // Сохраняем в localStorage
-                        localStorage.setItem('hegir_newsletter_subscribed', 'true');
-                        localStorage.setItem('hegir_newsletter_email', email);
-                        
-                        // Очищаем поле
-                        newsletterEmail.value = '';
-                        newsletterSubmit.disabled = false;
-                        newsletterSubmit.innerHTML = originalHTML;
-                        
-                        // Показываем уведомление
-                        alert('Вы успешно подписались на рассылку!');
-                    }, 1000);
-                });
-                
-                // Allow submitting with Enter key
-                newsletterEmail.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        newsletterSubmit.click();
-                    }
-                });
-            }
-            
-            // Кнопка "Наверх"
-            const scrollToTopBtn = document.getElementById('scroll-to-top');
-            if (scrollToTopBtn) {
-                scrollToTopBtn.addEventListener('click', function() {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-                
-                // Показывать/скрывать кнопку при прокрутке
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 300) {
-                        scrollToTopBtn.style.display = 'flex';
-                    } else {
-                        scrollToTopBtn.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Выбор страны
-            const countrySelect = document.getElementById('country-select');
-            const countryModal = document.getElementById('country-modal');
-            
-            if (countrySelect) {
-                countrySelect.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    countryModal.style.display = 'flex';
-                });
-                
-                // Загрузка сохраненной страны
-                const savedCountry = localStorage.getItem('hegir_country') || 'ru';
-                if (countrySelect) {
-                    countrySelect.value = savedCountry;
-                }
-                
-                // Изменение страны
-                countrySelect.addEventListener('change', function() {
-                    const country = this.value;
-                    localStorage.setItem('hegir_country', country);
-                    
-                    // Показываем уведомление об изменении страны
-                    const countryNames = {
-                        'ru': 'Россия',
-                        'kz': 'Казахстан',
-                        'by': 'Беларусь',
-                        'eu': 'Европа',
-                        'us': 'США',
-                        'cn': 'Китай'
-                    };
-                    
-                    alert(`Регион изменен на: ${countryNames[country]}`);
-                });
-            }
-            
-            // Модальное окно выбора страны
-            const countryOptions = document.querySelectorAll('.country-option');
-            const rememberCountryBtn = document.getElementById('remember-country');
-            
-            countryOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Убираем выделение у всех
-                    countryOptions.forEach(opt => opt.classList.remove('selected'));
-                    // Добавляем выделение текущему
-                    this.classList.add('selected');
-                    
-                    const country = this.dataset.country;
-                    if (countrySelect) {
-                        countrySelect.value = country;
-                    }
-                });
-            });
-            
-            if (rememberCountryBtn) {
-                rememberCountryBtn.addEventListener('click', function() {
-                    const selectedOption = document.querySelector('.country-option.selected');
-                    if (selectedOption) {
-                        const country = selectedOption.dataset.country;
-                        localStorage.setItem('hegir_country', country);
-                        localStorage.setItem('hegir_country_remembered', 'true');
-                        alert('Ваш выбор страны сохранен');
-                    }
-                });
-            }
-            
-            // Закрытие модальных окон
-            const closeModalButtons = document.querySelectorAll('.close-modal');
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const modal = this.closest('.modal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-            
-            // Закрытие модальных окон при клике вне их
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('modal')) {
-                    e.target.style.display = 'none';
-                }
-            });
-            
-            // Cookie соглашение
-            const cookieConsent = document.getElementById('cookie-consent');
-            const acceptCookiesBtn = document.getElementById('accept-cookies');
-            const cookieSettingsBtn = document.getElementById('cookie-settings');
-            const cookieSettingsModal = document.getElementById('cookie-settings-modal');
-            const saveCookieSettingsBtn = document.getElementById('save-cookie-settings');
-            const rejectCookiesBtn = document.getElementById('reject-cookies');
-            
-            // Проверяем, было ли уже согласие
-            const cookiesAccepted = localStorage.getItem('hegir_cookies_accepted');
-            
-            if (cookieConsent && !cookiesAccepted) {
-                // Показываем соглашение через 2 секунды после загрузки
-                setTimeout(() => {
-                    cookieConsent.classList.add('show');
-                }, 2000);
-            }
-            
-            // Принять все cookies
-            if (acceptCookiesBtn) {
-                acceptCookiesBtn.addEventListener('click', function() {
-                    localStorage.setItem('hegir_cookies_accepted', 'true');
-                    localStorage.setItem('hegir_cookies_analytics', 'true');
-                    localStorage.setItem('hegir_cookies_marketing', 'true');
-                    localStorage.setItem('hegir_cookies_functional', 'true');
-                    
-                    cookieConsent.classList.remove('show');
-                    alert('Настройки cookies сохранены');
-                });
-            }
-            
-            // Настройки cookies
-            if (cookieSettingsBtn) {
-                cookieSettingsBtn.addEventListener('click', function() {
-                    cookieSettingsModal.style.display = 'flex';
-                });
-            }
-            
-            // Сохранить настройки cookies
-            if (saveCookieSettingsBtn) {
-                saveCookieSettingsBtn.addEventListener('click', function() {
-                    const analyticsChecked = document.getElementById('analytics-cookies').checked;
-                    const marketingChecked = document.getElementById('marketing-cookies').checked;
-                    const functionalChecked = document.getElementById('functional-cookies').checked;
-                    
-                    localStorage.setItem('hegir_cookies_accepted', 'true');
-                    localStorage.setItem('hegir_cookies_analytics', analyticsChecked);
-                    localStorage.setItem('hegir_cookies_marketing', marketingChecked);
-                    localStorage.setItem('hegir_cookies_functional', functionalChecked);
-                    
-                    cookieSettingsModal.style.display = 'none';
-                    cookieConsent.classList.remove('show');
-                    alert('Настройки cookies сохранены');
-                });
-            }
-            
-            // Отклонить все cookies
-            if (rejectCookiesBtn) {
-                rejectCookiesBtn.addEventListener('click', function() {
-                    localStorage.setItem('hegir_cookies_accepted', 'true');
-                    localStorage.setItem('hegir_cookies_analytics', 'false');
-                    localStorage.setItem('hegir_cookies_marketing', 'false');
-                    localStorage.setItem('hegir_cookies_functional', 'false');
-                    
-                    // Отключаем ненужные cookies
-                    if (document.getElementById('analytics-cookies')) {
-                        document.getElementById('analytics-cookies').checked = false;
-                    }
-                    if (document.getElementById('marketing-cookies')) {
-                        document.getElementById('marketing-cookies').checked = false;
-                    }
-                    if (document.getElementById('functional-cookies')) {
-                        document.getElementById('functional-cookies').checked = false;
-                    }
-                    
-                    cookieSettingsModal.style.display = 'none';
-                    cookieConsent.classList.remove('show');
-                    alert('Все ненужные cookies отключены');
-                });
-            }
-            
-            // Загружаем сохраненные настройки cookies при загрузке страницы
-            const loadCookieSettings = function() {
-                const analytics = localStorage.getItem('hegir_cookies_analytics') === 'true';
-                const marketing = localStorage.getItem('hegir_cookies_marketing') === 'true';
-                const functional = localStorage.getItem('hegir_cookies_functional') === 'true';
-                
-                if (document.getElementById('analytics-cookies')) {
-                    document.getElementById('analytics-cookies').checked = analytics;
-                }
-                if (document.getElementById('marketing-cookies')) {
-                    document.getElementById('marketing-cookies').checked = marketing;
-                }
-                if (document.getElementById('functional-cookies')) {
-                    document.getElementById('functional-cookies').checked = functional;
-                }
-            };
-            
-            loadCookieSettings();
-            
-            // Загрузка сохраненного email для рассылки
-            const savedEmail = localStorage.getItem('hegir_newsletter_email');
-            if (savedEmail && newsletterEmail) {
-                newsletterEmail.value = savedEmail;
-            }
-            
-            // Обработка ссылок App Store и Google Play
-            const appBadges = document.querySelectorAll('.app-badge');
-            appBadges.forEach(badge => {
-                badge.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const platform = this.dataset.platform;
-                    if (platform === 'ios') {
-                        alert('Приложение Hegir будет доступно в App Store в ближайшее время');
-                    } else if (platform === 'android') {
-                        alert('Приложение Hegir будет доступно в Google Play в ближайшее время');
-                    }
-                });
-            });
         });
     </script>
 </body>
