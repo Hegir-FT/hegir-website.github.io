@@ -4,7 +4,7 @@
 class ForumManager {
   constructor() {
     this.config = {
-      API_URL: 'https://script.google.com/macros/s/AKfycbwnECLWoMoJq383mYioEtGoeWFTQveG1OsozQDPZ-HeLZfWAdvBDkUCGa4wYOYLXpsm/exec',
+      API_URL: 'https://script.google.com/macros/s/AKfycbxUIeT7tmBw7wSLLeWHGH1Maj34C22pzL3gJA5Mq44LKPzxFYE3w8h_PvAOFl0vPLpP/exec',
       CATEGORIES: {
         'products': 'Продукты Hegir',
         'support': 'Техподдержка',
