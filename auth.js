@@ -3,7 +3,7 @@
 
 const AUTH_CONFIG = {
   // ВАЖНО: Замените на URL вашего Google Apps Script
-  API_URL: 'https://script.google.com/macros/s/1mq4JNlD6HGt3PQIE8mR9oJ7MUOsZnFQN7zHj-sKpU8aXywvMmLG7PN9h/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwnECLWoMoJq383mYioEtGoeWFTQveG1OsozQDPZ-HeLZfWAdvBDkUCGa4wYOYLXpsm/exec',
   
   // Ключи localStorage
   STORAGE_KEYS: {
