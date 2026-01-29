@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Hegir</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0D0D0D;
+            --text-white: #FFFFFF;
+            --text-light: #E5E5E5;
+            --accent-primary: #0066FF;
+            --accent-secondary: #00AAFF;
+            --accent-success: #00CC88;
+            --accent-danger: #FF4444;
+            --card-bg: #1A1A1A;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .header-actions a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-actions a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 5% 5%;
+        }
+        
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            min-height: 600px;
+        }
+        
+        /* Left Side - Branding */
+        .login-branding {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.9), rgba(0, 170, 255, 0.7));
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-branding::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,0 L100,0 L100,100 Z" fill="white"/></svg>');
+            background-size: cover;
+        }
+        
+        .brand-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .brand-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .brand-features {
+            list-style: none;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .brand-features li {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .brand-features i {
+            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Right Side - Login Form */
+        .login-form-container {
+            flex: 1;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-header {
+            margin-bottom: 2.5rem;
+        }
+        
+        .form-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+        }
+        
+        .form-header p {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+        
+        /* Messages */
+        .message-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.success {
+            background: rgba(0, 204, 136, 0.1);
+            border: 1px solid var(--accent-success);
+            color: var(--accent-success);
+        }
+        
+        .message.error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+        }
+        
+        .message.warning {
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid #FF9500;
+            color: #FF9500;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        /* Remember Me & Forgot Password */
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-primary);
+        }
+        
+        .forgot-password {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        /* Buttons */
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
+        }
+        
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Social Login */
+        .social-divider {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .social-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-divider span {
+            background: var(--card-bg);
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .social-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-button {
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .social-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .social-button.google {
+            color: #DB4437;
+        }
+        
+        .social-button.facebook {
+            color: #4267B2;
+        }
+        
+        .social-button.github {
+            color: #FFFFFF;
+        }
+        
+        /* Register Link */
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .register-link a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #080808;
+            padding: 2rem 5%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .login-branding {
+                padding: 3rem 2rem;
+            }
+            
+            .login-form-container {
+                padding: 3rem 2rem;
+            }
+            
+            .brand-logo {
+                font-size: 2.5rem;
+            }
+            
+            .brand-tagline {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-container {
+                padding: 100px 3% 3%;
+            }
+            
+            .login-branding, .login-form-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-header h1 {
+                font-size: 2rem;
+            }
+            
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .header-actions {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo">HEG<span>IR</span></a>
+        <div class="header-actions">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Главная
+            </a>
+            <a href="forum.html">
+                <i class="fas fa-comments"></i> Форум
+            </a>
+            <a href="register.html">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="login-container">
+            <!-- Left Side - Branding -->
+            <div class="login-branding">
+                <div class="brand-logo">Hegir ID</div>
+                <div class="brand-tagline">Один аккаунт для всей экосистемы</div>
+                
+                <ul class="brand-features">
+                    <li>
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Бесшовная синхронизация между устройствами</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Безопасное хранение данных с квантовым шифрованием</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bolt"></i>
+                        <span>Мгновенный доступ ко всем сервисам Hegir</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        <span>Присоединяйтесь к сообществу энтузиастов</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="login-form-container">
+                <div class="form-header">
+                    <h1>Вход в Hegir ID</h1>
+                    <p>Войдите, чтобы получить доступ ко всем возможностям экосистемы</p>
+                </div>
+                
+                <!-- Messages Container -->
+                <div class="message-container" id="message-container">
+                    <!-- Messages will be inserted here by JavaScript -->
+                </div>
+                
+                <!-- Login Form -->
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email адрес</label>
+                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Пароль</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                            <span class="input-icon" id="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <span>Запомнить меня</span>
+                        </label>
+                        <a href="#" class="forgot-password" id="forgot-password">
+                            Забыли пароль?
+                        </a>
+                    </div>
+                    
+                    <button type="submit" class="login-button" id="login-button">
+                        <i class="fas fa-sign-in-alt"></i> Войти
+                    </button>
+                </form>
+                
+                <!-- Social Login -->
+                <div class="social-divider">
+                    <span>Или войдите через</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <button type="button" class="social-button google">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="social-button facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                    <button type="button" class="social-button github">
+                        <i class="fab fa-github"></i> GitHub
+                    </button>
+                </div>
+                
+                <!-- Register Link -->
+                <div class="register-link">
+                    <p>Нет аккаунта? <a href="register.html">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Главная</a>
+            <a href="forum.html">Форум</a>
+            <a href="privacy.html">Конфиденциальность</a>
+            <a href="terms.html">Условия</a>
+            <a href="support.html">Поддержка</a>
+        </div>
+        <p>© 2023 Hegir Technologies. Все права защищены.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">Единая экосистема. Бесшовный опыт.</p>
+    </footer>
+
+    <script>
+        // Конфигурация
+        const CONFIG = {
+            // ВАЖНО: Замените этот URL на URL вашего Google Apps Script
+            GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec',
+            
+            // Сообщения
+            MESSAGES: {
+                LOGIN_SUCCESS: 'Вход выполнен успешно! Перенаправление...',
+                LOGIN_ERROR: 'Неверный email или пароль',
+                CONNECTION_ERROR: 'Ошибка соединения. Проверьте интернет.',
+                VALIDATION_ERROR: 'Заполните все поля',
+                PASSWORD_REQUIREMENTS: 'Пароль должен быть не менее 6 символов',
+                EMAIL_INVALID: 'Введите корректный email адрес'
+            },
+            
+            // Перенаправление после успешного входа
+            REDIRECT_AFTER_LOGIN: 'index.html',
+            REDIRECT_DELAY: 1500
+        };
+        
+        // Основные функции
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, не вошел ли пользователь уже
+            checkExistingLogin();
+            
+            // Инициализируем компоненты
+            initComponents();
+            
+            // Обработка формы входа
+            initLoginForm();
+            
+            // Инициализируем социальные кнопки
+            initSocialButtons();
+        });
+        
+        // Проверка существующего входа
+        function checkExistingLogin() {
+            const user = localStorage.getItem('hegir_user');
+            if (user) {
+                showMessage('Вы уже вошли в систему. <a href="' + CONFIG.REDIRECT_AFTER_LOGIN + '" style="color: #00CC88; margin-left: 10px;">Перейти на главную →</a>', 'success');
+            }
+        }
+        
+        // Инициализация компонентов
+        function initComponents() {
+            // Переключение видимости пароля
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Забыли пароль
+            document.getElementById('forgot-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                showMessage('Функция восстановления пароля будет доступна в ближайшее время', 'warning');
+            });
+        }
+        
+        // Инициализация формы входа
+        function initLoginForm() {
+            const loginForm = document.getElementById('login-form');
+            const loginButton = document.getElementById('login-button');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Получаем данные формы
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const rememberMe = document.getElementById('remember-me').checked;
+                
+                // Валидация
+                if (!validateForm(email, password)) {
+                    return;
+                }
+                
+                // Показываем состояние загрузки
+                setLoadingState(true);
+                
+                try {
+                    // Отправляем запрос на вход
+                    const response = await authenticateUser(email, password);
+                    
+                    if (response.success) {
+                        // Успешный вход
+                        handleSuccessfulLogin(response.user, rememberMe);
+                    } else {
+                        // Ошибка входа
+                        showMessage(response.message || CONFIG.MESSAGES.LOGIN_ERROR, 'error');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showMessage(CONFIG.MESSAGES.CONNECTION_ERROR, 'error');
+                } finally {
+                    // Сбрасываем состояние загрузки
+                    setLoadingState(false);
+                }
+            });
+            
+            // Валидация формы
+            function validateForm(email, password) {
+                // Проверяем email
+                if (!email) {
+                    showMessage('Введите email адрес', 'error');
+                    return false;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showMessage(CONFIG.MESSAGES.EMAIL_INVALID, 'error');
+                    return false;
+                }
+                
+                // Проверяем пароль
+                if (!password) {
+                    showMessage('Введите пароль', 'error');
+                    return false;
+                }
+                
+                if (password.length < 6) {
+                    showMessage(CONFIG.MESSAGES.PASSWORD_REQUIREMENTS, 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Установка состояния загрузки
+            function setLoadingState(isLoading) {
+                if (isLoading) {
+                    loginButton.disabled = true;
+                    loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
+                } else {
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Войти';
+                }
+            }
+        }
+        
+        // Аутентификация пользователя
+        async function authenticateUser(email, password) {
+            // Имитация задержки сети
+            await simulateNetworkDelay();
+            
+            // Пытаемся войти через Google Apps Script
+            try {
+                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                });
+                
+                return await response.json();
+            } catch (error) {
+                // Если скрипт не доступен, используем локальную имитацию
+                console.warn('Google Script not available, using mock data');
+                return mockAuthentication(email, password);
+            }
+        }
+        
+        // Имитация задержки сети
+        function simulateNetworkDelay() {
+            return new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+        // Локальная имитация аутентификации (для демо)
+        function mockAuthentication(email, password) {
+            // В реальном приложении здесь будет обращение к Google Apps Script
+            // Для демо используем тестовые учетные данные
+            const testUsers = [
+                { email: 'test@hegir.ru', password: '123456', name: 'Тестовый Пользователь', id: 'test-001' },
+                { email: 'admin@hegir.ru', password: 'admin123', name: 'Администратор', id: 'admin-001' },
+                { email: 'demo@hegir.ru', password: 'demo123', name: 'Демо Пользователь', id: 'demo-001' }
+            ];
+            
+            const user = testUsers.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                return {
+                    success: true,
+                    message: 'Вход выполнен успешно',
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email
+                    }
+                };
+            } else {
+                return {
+                    success: false,
+                    message: 'Неверный email или пароль'
+                };
+            }
+        }
+        
+        // Обработка успешного входа
+        function handleSuccessfulLogin(user, rememberMe) {
+            // Сохраняем данные пользователя
+            const userData = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                loginTime: new Date().toISOString(),
+                rememberMe: rememberMe
+            };
+            
+            localStorage.setItem('hegir_user', JSON.stringify(userData));
+            
+            // Показываем сообщение об успехе
+            showMessage(CONFIG.MESSAGES.LOGIN_SUCCESS, 'success');
+            
+            // Перенаправляем после задержки
+            setTimeout(() => {
+                window.location.href = CONFIG.REDIRECT_AFTER_LOGIN;
+            }, CONFIG.REDIRECT_DELAY);
+        }
+        
+        // Инициализация социальных кнопок
+        function initSocialButtons() {
+            const socialButtons = document.querySelectorAll('.social-button');
+            
+            socialButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const provider = this.classList.contains('google') ? 'Google' :
+                                   this.classList.contains('facebook') ? 'Facebook' : 'GitHub';
+                    
+                    showMessage(`Вход через ${provider} будет доступен в ближайшее время`, 'warning');
+                });
+            });
+        }
+        
+        // Вспомогательные функции
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function showMessage(text, type = 'info') {
+            const messageContainer = document.getElementById('message-container');
+            
+            // Создаем элемент сообщения
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                <i class="fas fa-${getMessageIcon(type)}"></i>
+                <span>${text}</span>
+            `;
+            
+            // Очищаем предыдущие сообщения
+            messageContainer.innerHTML = '';
+            
+            // Добавляем новое сообщение
+            messageContainer.appendChild(messageDiv);
+            
+            // Автоматическое скрытие для success/warning сообщений
+            if (type === 'success' || type === 'warning') {
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        if (messageDiv.parentNode) {
+                            messageDiv.parentNode.removeChild(messageDiv);
+                        }
+                    }, 300);
+                }, 5000);
+            }
+        }
+        
+        function getMessageIcon(type) {
+            switch (type) {
+                case 'success': return 'check-circle';
+                case 'error': return 'exclamation-circle';
+                case 'warning': return 'exclamation-triangle';
+                default: return 'info-circle';
+            }
+        }
+        
+        // Экспорт функций для глобального использования
+        window.hegirAuth = {
+            logout: function() {
+                localStorage.removeItem('hegir_user');
+                showMessage('Вы вышли из системы', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            },
+            
+            isLoggedIn: function() {
+                return !!localStorage.getItem('hegir_user');
+            },
+            
+            getUser: function() {
+                const user = localStorage.getItem('hegir_user');
+                return user ? JSON.parse(user) : null;
+            },
+            
+            updateUser: function(userData) {
+                const currentUser = this.getUser();
+                if (currentUser) {
+                    const updatedUser = { ...currentUser, ...userData };
+                    localStorage.setItem('hegir_user', JSON.stringify(updatedUser));
+                }
+            }
+        };
+    </script>
+</body>
+</html>

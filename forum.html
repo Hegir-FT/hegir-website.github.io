@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форум - Hegir</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0D0D0D;
+            --text-white: #FFFFFF;
+            --text-light: #E5E5E5;
+            --accent-primary: #0066FF;
+            --accent-secondary: #00AAFF;
+            --accent-success: #00CC88;
+            --accent-danger: #FF4444;
+            --card-bg: #1A1A1A;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .header-actions a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-actions a:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Main Content */
+        .forum-container {
+            padding: 120px 5% 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Forum Header */
+        .forum-header {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .forum-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+        }
+        
+        .forum-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+        
+        /* Stats */
+        .forum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
+        }
+        
+        .action-btn.secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+        }
+        
+        .action-btn.secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .filter-select {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .category-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .category-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.1);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+        }
+        
+        .category-count {
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        /* Threads Section */
+        .threads-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+        
+        .new-thread-btn {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .new-thread-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
+        }
+        
+        /* Threads List */
+        .threads-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .thread-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .thread-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .thread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .thread-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            color: var(--text-white);
+        }
+        
+        .thread-category {
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            background: rgba(0, 102, 255, 0.1);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+        
+        .thread-date {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .thread-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        .thread-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-white);
+            line-height: 1.3;
+        }
+        
+        .thread-text {
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .thread-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .thread-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .thread-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .thread-action {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .thread-action:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-primary);
+        }
+        
+        /* No Threads */
+        .no-threads {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .no-threads i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination-btn {
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-primary);
+        }
+        
+        .pagination-current {
+            padding: 0.8rem 1.2rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--accent-danger);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+            font-weight: 500;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.success {
+            background: rgba(0, 204, 136, 0.1);
+            border: 1px solid var(--accent-success);
+            color: var(--accent-success);
+        }
+        
+        .message.error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+        }
+        
+        .message.warning {
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid #FF9500;
+            color: #FF9500;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #080808;
+            padding: 3rem 5% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-white);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .forum-header {
+                padding: 1.5rem;
+            }
+            
+            .forum-title {
+                font-size: 2rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .thread-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .thread-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .thread-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .thread-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-filter {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .header-actions {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .forum-container {
+                padding: 100px 3% 3%;
+            }
+            
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .forum-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo">HEG<span>IR</span></a>
+        <div class="header-actions">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Главная
+            </a>
+            <a href="login.html">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </a>
+            <a href="register.html">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="forum-container">
+        <!-- Forum Header -->
+        <div class="forum-header">
+            <h1 class="forum-title">Сообщество Hegir</h1>
+            <p class="forum-subtitle">Обсуждайте продукты, делитесь идеями и находите решения вместе с сообществом</p>
+            
+            <!-- Stats -->
+            <div class="forum-stats" id="forum-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="stat-value" id="total-threads">0</div>
+                    <div class="stat-label">Темы обсуждений</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="total-users">0</div>
+                    <div class="stat-label">Участников</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="stat-value" id="solved-threads">0</div>
+                    <div class="stat-label">Решенных проблем</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-value" id="active-now">0</div>
+                    <div class="stat-label">Сейчас онлайн</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn" id="new-thread-btn">
+                    <i class="fas fa-plus"></i> Новая тема
+                </button>
+                
+                <button class="action-btn secondary" id="search-btn">
+                    <i class="fas fa-search"></i> Поиск
+                </button>
+                
+                <button class="action-btn secondary" id="my-threads-btn">
+                    <i class="fas fa-user"></i> Мои темы
+                </button>
+                
+                <button class="action-btn secondary" id="help-btn">
+                    <i class="fas fa-question-circle"></i> Помощь
+                </button>
+            </div>
+            
+            <!-- Search and Filter -->
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="forum-search" placeholder="Поиск тем и сообщений...">
+                </div>
+                
+                <select class="filter-select" id="category-filter">
+                    <option value="">Все категории</option>
+                    <option value="products">Продукты Hegir</option>
+                    <option value="support">Техподдержка</option>
+                    <option value="ideas">Идеи и предложения</option>
+                    <option value="general">Общие обсуждения</option>
+                </select>
+                
+                <select class="filter-select" id="sort-filter">
+                    <option value="newest">Сначала новые</option>
+                    <option value="popular">Популярные</option>
+                    <option value="unanswered">Без ответов</option>
+                    <option value="solved">Решенные</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Categories -->
+        <div class="categories">
+            <a href="#" class="category-card" data-category="products">
+                <div class="category-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="category-title">Продукты Hegir</div>
+                <p>Обсуждение процессоров, видеокарт, ноутбуков, смартфонов и VR очков</p>
+                <div class="category-count">Тем: <span id="category-products">0</span></div>
+            </a>
+            
+            <a href="#" class="category-card" data-category="support">
+                <div class="category-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="category-title">Техподдержка</div>
+                <p>Помощь с настройкой, решением проблем и вопросами совместимости</p>
+                <div class="category-count">Тем: <span id="category-support">0</span></div>
+            </a>
+            
+            <a href="#" class="category-card" data-category="ideas">
+                <div class="category-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="category-title">Идеи и предложения</div>
+                <p>Предлагайте улучшения и голосуйте за будущие обновления продуктов</p>
+                <div class="category-count">Тем: <span id="category-ideas">0</span></div>
+            </a>
+            
+            <a href="#" class="category-card" data-category="general">
+                <div class="category-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="category-title">Общие обсуждения</div>
+                <p>Общение на любые темы, не связанные напрямую с продуктами</p>
+                <div class="category-count">Тем: <span id="category-general">0</span></div>
+            </a>
+        </div>
+        
+        <!-- Recent Threads -->
+        <div class="threads-section">
+            <div class="section-header">
+                <h2 class="section-title">Последние обсуждения</h2>
+                <button class="new-thread-btn" id="new-thread-main-btn">
+                    <i class="fas fa-plus"></i> Новая тема
+                </button>
+            </div>
+            
+            <!-- Messages Container -->
+            <div id="message-container"></div>
+            
+            <!-- Threads List -->
+            <div class="threads-list" id="threads-list">
+                <!-- Threads will be loaded here -->
+                <div class="no-threads">
+                    <i class="fas fa-comments"></i>
+                    <h3>Темы еще не созданы</h3>
+                    <p>Будьте первым, кто начнет обсуждение!</p>
+                    <button class="action-btn" id="create-first-thread" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i> Создать первую тему
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination" id="pagination-container">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- New Thread Modal -->
+    <div class="modal" id="new-thread-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Новая тема</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="new-thread-form">
+                <div class="form-group">
+                    <label class="form-label">Категория</label>
+                    <select class="form-select" id="thread-category" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="products">Продукты Hegir</option>
+                        <option value="support">Техподдержка</option>
+                        <option value="ideas">Идеи и предложения</option>
+                        <option value="general">Общие обсуждения</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Заголовок темы</label>
+                    <input type="text" class="form-input" id="thread-title" placeholder="Введите заголовок темы" required minlength="5" maxlength="100">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Сообщение</label>
+                    <textarea class="form-textarea" id="thread-content" placeholder="Опишите вашу тему подробнее..." required minlength="10"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submit-thread-btn">
+                    <i class="fas fa-paper-plane"></i> Создать тему
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Сообщество</h4>
+                <ul>
+                    <li><a href="#">Правила форума</a></li>
+                    <li><a href="#">Лидеры сообщества</a></li>
+                    <li><a href="#">Блог Hegir</a></li>
+                    <li><a href="#">События и встречи</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Ресурсы</h4>
+                <ul>
+                    <li><a href="support.html">Техподдержка</a></li>
+                    <li><a href="docs.html">Документация</a></li>
+                    <li><a href="downloads.html">Загрузки</a></li>
+                    <li><a href="tutorials.html">Обучающие материалы</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Продукты</h4>
+                <ul>
+                    <li><a href="penisa.html">Процессоры PENISA</a></li>
+                    <li><a href="nexus.html">Видеокарты NEXUS</a></li>
+                    <li><a href="severity.html">Ноутбуки SEVERITY</a></li>
+                    <li><a href="phtalex.html">Смартфоны PHTALEX</a></li>
+                    <li><a href="flux.html">VR очки FLUX</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Компания</h4>
+                <ul>
+                    <li><a href="about.html">О Hegir</a></li>
+                    <li><a href="careers.html">Карьера</a></li>
+                    <li><a href="press.html">Пресс-центр</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2023 Hegir Technologies. Все права защищены.</p>
+            <p style="margin-top: 0.5rem;">Сообщество Hegir — место, где встречаются идеи и решения</p>
+        </div>
+    </footer>
+
+    <script>
+        // Конфигурация
+        const CONFIG = {
+            // ВАЖНО: Замените этот URL на URL вашего Google Apps Script
+            GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec',
+            
+            // Категории форума
+            CATEGORIES: {
+                'products': {
+                    name: 'Продукты Hegir',
+                    icon: 'fas fa-cube',
+                    description: 'Обсуждение продуктов Hegir'
+                },
+                'support': {
+                    name: 'Техподдержка',
+                    icon: 'fas fa-headset',
+                    description: 'Помощь и решение проблем'
+                },
+                'ideas': {
+                    name: 'Идеи и предложения',
+                    icon: 'fas fa-lightbulb',
+                    description: 'Предложения по улучшению'
+                },
+                'general': {
+                    name: 'Общие обсуждения',
+                    icon: 'fas fa-comments',
+                    description: 'Общение на любые темы'
+                }
+            },
+            
+            // Сообщения
+            MESSAGES: {
+                LOGIN_REQUIRED: 'Для создания темы необходимо войти в систему',
+                THREAD_CREATED: 'Тема успешно создана!',
+                THREAD_ERROR: 'Ошибка создания темы',
+                LOADING_ERROR: 'Ошибка загрузки тем',
+                NO_THREADS: 'Темы еще не созданы'
+            }
+        };
+        
+        // Глобальные переменные
+        let threads = [];
+        let currentCategory = 'all';
+        let currentPage = 1;
+        const threadsPerPage = 10;
+        
+        // Основные функции
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем авторизацию
+            checkAuth();
+            
+            // Инициализируем компоненты
+            initComponents();
+            
+            // Загружаем темы
+            loadThreads();
+            
+            // Обновляем статистику
+            updateStats();
+            
+            // Инициализируем поиск
+            initSearch();
+            
+            // Обновляем каждые 30 секунд
+            setInterval(() => {
+                loadThreads();
+                updateStats();
+            }, 30000);
+        });
+        
+        // Проверка авторизации
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('hegir_user'));
+            if (!user) {
+                // Показываем предупреждение для неавторизованных пользователей
+                const messageContainer = document.getElementById('message-container');
+                messageContainer.innerHTML = `
+                    <div class="message warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Для создания тем необходимо <a href="login.html" style="color: #FF9500; text-decoration: underline;">войти в систему</a></span>
+                    </div>
+                `;
+            }
+        }
+        
+        // Инициализация компонентов
+        function initComponents() {
+            // Кнопки создания темы
+            const newThreadBtns = document.querySelectorAll('#new-thread-btn, #new-thread-main-btn, #create-first-thread');
+            const newThreadModal = document.getElementById('new-thread-modal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            
+            newThreadBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const user = JSON.parse(localStorage.getItem('hegir_user'));
+                    if (!user) {
+                        showMessage(CONFIG.MESSAGES.LOGIN_REQUIRED, 'warning');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1500);
+                        return;
+                    }
+                    newThreadModal.style.display = 'flex';
+                });
+            });
+            
+            // Закрытие модального окна
+            closeModalBtn.addEventListener('click', () => {
+                newThreadModal.style.display = 'none';
+            });
+            
+            // Закрытие по клику вне окна
+            window.addEventListener('click', (e) => {
+                if (e.target === newThreadModal) {
+                    newThreadModal.style.display = 'none';
+                }
+            });
+            
+            // Обработка формы создания темы
+            const newThreadForm = document.getElementById('new-thread-form');
+            const submitBtn = document.getElementById('submit-thread-btn');
+            
+            newThreadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const user = JSON.parse(localStorage.getItem('hegir_user'));
+                if (!user) {
+                    showMessage(CONFIG.MESSAGES.LOGIN_REQUIRED, 'error');
+                    return;
+                }
+                
+                const category = document.getElementById('thread-category').value;
+                const title = document.getElementById('thread-title').value.trim();
+                const content = document.getElementById('thread-content').value.trim();
+                
+                if (!category || !title || !content) {
+                    showMessage('Заполните все поля', 'error');
+                    return;
+                }
+                
+                if (title.length < 5) {
+                    showMessage('Заголовок должен быть не менее 5 символов', 'error');
+                    return;
+                }
+                
+                if (content.length < 10) {
+                    showMessage('Сообщение должно быть не менее 10 символов', 'error');
+                    return;
+                }
+                
+                // Показываем загрузку
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Создание...';
+                
+                try {
+                    const response = await createThread(user, category, title, content);
+                    
+                    if (response.success) {
+                        showMessage(CONFIG.MESSAGES.THREAD_CREATED, 'success');
+                        newThreadModal.style.display = 'none';
+                        newThreadForm.reset();
+                        
+                        // Перезагружаем темы
+                        setTimeout(() => {
+                            loadThreads();
+                            updateStats();
+                        }, 1000);
+                    } else {
+                        showMessage(response.message || CONFIG.MESSAGES.THREAD_ERROR, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error creating thread:', error);
+                    showMessage('Ошибка соединения с сервером', 'error');
+                } finally {
+                    // Восстанавливаем кнопку
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+            
+            // Фильтрация по категориям
+            const categoryCards = document.querySelectorAll('.category-card');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const category = card.dataset.category;
+                    currentCategory = category;
+                    currentPage = 1;
+                    
+                    // Обновляем фильтр
+                    categoryFilter.value = category;
+                    
+                    // Показываем только выбранную категорию
+                    filterThreadsByCategory(category);
+                });
+            });
+            
+            // Изменение фильтра категории
+            categoryFilter.addEventListener('change', (e) => {
+                currentCategory = e.target.value;
+                currentPage = 1;
+                filterThreadsByCategory(currentCategory);
+            });
+            
+            // Изменение сортировки
+            const sortFilter = document.getElementById('sort-filter');
+            sortFilter.addEventListener('change', (e) => {
+                sortThreads(e.target.value);
+            });
+            
+            // Кнопки действий
+            document.getElementById('search-btn').addEventListener('click', () => {
+                document.getElementById('forum-search').focus();
+            });
+            
+            document.getElementById('my-threads-btn').addEventListener('click', () => {
+                const user = JSON.parse(localStorage.getItem('hegir_user'));
+                if (!user) {
+                    showMessage('Для просмотра ваших тем необходимо войти в систему', 'warning');
+                    return;
+                }
+                filterThreadsByUser(user.id);
+            });
+            
+            document.getElementById('help-btn').addEventListener('click', () => {
+                showMessage('Раздел помощи будет доступен в ближайшее время', 'info');
+            });
+        }
+        
+        // Загрузка тем
+        async function loadThreads() {
+            try {
+                // В реальном приложении здесь будет обращение к API
+                // Для демо используем мок данные
+                threads = await getMockThreads();
+                
+                // Обновляем UI
+                renderThreads();
+                updateCategoryCounts();
+                
+            } catch (error) {
+                console.error('Error loading threads:', error);
+                showMessage(CONFIG.MESSAGES.LOADING_ERROR, 'error');
+            }
+        }
+        
+        // Получение мок данных тем (для демо)
+        async function getMockThreads() {
+            // Имитация задержки сети
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Получаем сохраненные темы из localStorage
+            const savedThreads = JSON.parse(localStorage.getItem('hegir_threads') || '[]');
+            
+            // Если тем нет, создаем демо темы
+            if (savedThreads.length === 0) {
+                return createDemoThreads();
+            }
+            
+            return savedThreads;
+        }
+        
+        // Создание демо тем
+        function createDemoThreads() {
+            const demoThreads = [
+                {
+                    id: 'thread-1',
+                    userId: 'user-1',
+                    userName: 'Александр Петров',
+                    date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                    category: 'products',
+                    title: 'Вопрос о производительности процессора P7-980KF',
+                    content: 'Здравствуйте! Интересует вопрос о производительности процессора P7-980KF в играх. Кто-нибудь тестил? Какие результаты?',
+                    likes: 12,
+                    replies: 8
+                },
+                {
+                    id: 'thread-2',
+                    userId: 'user-2',
+                    userName: 'Мария Смирнова',
+                    date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+                    category: 'support',
+                    title: 'Проблема с драйверами видеокарты NEXUS 90',
+                    content: 'После обновления драйверов на последнюю версию появились артефакты в играх. Как откатиться на предыдущую версию?',
+                    likes: 5,
+                    replies: 15
+                },
+                {
+                    id: 'thread-3',
+                    userId: 'user-3',
+                    userName: 'Иван Козлов',
+                    date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    category: 'ideas',
+                    title: 'Предложение: добавить функцию синхронизации смартфонов',
+                    content: 'Было бы здорово, если бы смартфоны PHTALEX могли синхронизировать уведомления с ноутбуками SEVERITY.',
+                    likes: 24,
+                    replies: 12
+                },
+                {
+                    id: 'thread-4',
+                    userId: 'user-4',
+                    userName: 'Екатерина Новикова',
+                    date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    category: 'general',
+                    title: 'Встреча энтузиастов Hegir в Москве',
+                    content: 'Организую встречу поклонников продукции Hegir в Москве. Кто хочет присоединиться? Предлагайте даты и места!',
+                    likes: 8,
+                    replies: 5
+                }
+            ];
+            
+            // Сохраняем демо темы
+            localStorage.setItem('hegir_threads', JSON.stringify(demoThreads));
+            
+            return demoThreads;
+        }
+        
+        // Создание новой темы
+        async function createThread(user, category, title, content) {
+            // Имитация задержки сети
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // В реальном приложении здесь будет обращение к API
+            const newThread = {
+                id: 'thread-' + Date.now(),
+                userId: user.id,
+                userName: user.name,
+                date: new Date().toISOString(),
+                category: category,
+                title: title,
+                content: content,
+                likes: 0,
+                replies: 0
+            };
+            
+            // Добавляем тему в список
+            const savedThreads = JSON.parse(localStorage.getItem('hegir_threads') || '[]');
+            savedThreads.unshift(newThread); // Добавляем в начало
+            localStorage.setItem('hegir_threads', JSON.stringify(savedThreads));
+            
+            // Обновляем кэш
+            threads = savedThreads;
+            
+            return {
+                success: true,
+                message: 'Тема успешно создана',
+                thread: newThread
+            };
+        }
+        
+        // Рендеринг тем
+        function renderThreads() {
+            const threadsList = document.getElementById('threads-list');
+            
+            // Фильтруем темы по категории
+            let filteredThreads = threads;
+            if (currentCategory !== 'all') {
+                filteredThreads = threads.filter(thread => thread.category === currentCategory);
+            }
+            
+            // Применяем пагинацию
+            const startIndex = (currentPage - 1) * threadsPerPage;
+            const endIndex = startIndex + threadsPerPage;
+            const pagedThreads = filteredThreads.slice(startIndex, endIndex);
+            
+            if (pagedThreads.length === 0) {
+                threadsList.innerHTML = `
+                    <div class="no-threads">
+                        <i class="fas fa-comments"></i>
+                        <h3>${currentCategory === 'all' ? 'Темы еще не созданы' : 'Нет тем в этой категории'}</h3>
+                        <p>${currentCategory === 'all' ? 'Будьте первым, кто начнет обсуждение!' : 'Создайте первую тему в этой категории!'}</p>
+                        <button class="action-btn" id="create-first-thread">
+                            <i class="fas fa-plus"></i> Создать тему
+                        </button>
+                    </div>
+                `;
+                
+                // Добавляем обработчик для кнопки
+                setTimeout(() => {
+                    document.getElementById('create-first-thread').addEventListener('click', () => {
+                        document.getElementById('new-thread-btn').click();
+                    });
+                }, 100);
+                
+                return;
+            }
+            
+            // Рендерим темы
+            threadsList.innerHTML = pagedThreads.map(thread => `
+                <div class="thread-card" data-thread-id="${thread.id}">
+                    <div class="thread-header">
+                        <div class="thread-author">
+                            <div class="author-avatar">${thread.userName.charAt(0).toUpperCase()}</div>
+                            <div class="author-info">
+                                <div class="author-name">${thread.userName}</div>
+                                <div class="thread-category">${CONFIG.CATEGORIES[thread.category]?.name || thread.category}</div>
+                            </div>
+                        </div>
+                        <div class="thread-date">${formatDate(thread.date)}</div>
+                    </div>
+                    
+                    <div class="thread-content">
+                        <h3 class="thread-title">${escapeHtml(thread.title)}</h3>
+                        <p class="thread-text">${escapeHtml(truncateText(thread.content, 200))}</p>
+                    </div>
+                    
+                    <div class="thread-footer">
+                        <div class="thread-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-thumbs-up"></i> ${thread.likes}
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-comment"></i> ${thread.replies}
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-eye"></i> ${Math.floor(Math.random() * 100) + 50}
+                            </div>
+                        </div>
+                        
+                        <div class="thread-actions">
+                            <button class="thread-action like-btn" onclick="likeThread('${thread.id}')">
+                                <i class="far fa-thumbs-up"></i> Нравится
+                            </button>
+                            <button class="thread-action reply-btn" onclick="replyToThread('${thread.id}')">
+                                <i class="far fa-comment"></i> Ответить
+                            </button>
+                            <button class="thread-action share-btn" onclick="shareThread('${thread.id}')">
+                                <i class="fas fa-share"></i> Поделиться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Рендерим пагинацию
+            renderPagination(filteredThreads.length);
+        }
+        
+        // Рендеринг пагинации
+        function renderPagination(totalThreads) {
+            const paginationContainer = document.getElementById('pagination-container');
+            const totalPages = Math.ceil(totalThreads / threadsPerPage);
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Кнопка "Назад"
+            if (currentPage > 1) {
+                paginationHTML += `
+                    <button class="pagination-btn" onclick="goToPage(${currentPage - 1})">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                `;
+            }
+            
+            // Первая страница
+            if (currentPage > 3) {
+                paginationHTML += `<button class="pagination-btn" onclick="goToPage(1)">1</button>`;
+                if (currentPage > 4) {
+                    paginationHTML += `<span style="padding: 0.8rem;">...</span>`;
+                }
+            }
+            
+            // Страницы вокруг текущей
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, startPage + 4);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<span class="pagination-current">${i}</span>`;
+                } else {
+                    paginationHTML += `<button class="pagination-btn" onclick="goToPage(${i})">${i}</button>`;
+                }
+            }
+            
+            // Последняя страница
+            if (currentPage < totalPages - 2) {
+                if (currentPage < totalPages - 3) {
+                    paginationHTML += `<span style="padding: 0.8rem;">...</span>`;
+                }
+                paginationHTML += `<button class="pagination-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            // Кнопка "Вперед"
+            if (currentPage < totalPages) {
+                paginationHTML += `
+                    <button class="pagination-btn" onclick="goToPage(${currentPage + 1})">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                `;
+            }
+            
+            paginationContainer.innerHTML = paginationHTML;
+        }
+        
+        // Переход на страницу
+        function goToPage(page) {
+            currentPage = page;
+            renderThreads();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Фильтрация тем по категории
+        function filterThreadsByCategory(category) {
+            currentCategory = category;
+            currentPage = 1;
+            renderThreads();
+        }
+        
+        // Фильтрация тем по пользователю
+        function filterThreadsByUser(userId) {
+            const userThreads = threads.filter(thread => thread.userId === userId);
+            
+            if (userThreads.length === 0) {
+                showMessage('У вас еще нет созданных тем', 'info');
+                return;
+            }
+            
+            // Временно показываем только темы пользователя
+            const tempThreads = [...threads];
+            threads = userThreads;
+            currentCategory = 'user';
+            currentPage = 1;
+            renderThreads();
+            
+            // Добавляем кнопку для возврата
+            const threadsList = document.getElementById('threads-list');
+            threadsList.innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                    <button class="action-btn secondary" onclick="resetThreads()">
+                        <i class="fas fa-arrow-left"></i> Вернуться ко всем темам
+                    </button>
+                </div>
+                ${threadsList.innerHTML}
+            `;
+            
+            // Восстанавливаем темы через 5 секунд
+            setTimeout(() => {
+                if (currentCategory === 'user') {
+                    showMessage('Автоматический возврат ко всем темам через 5 секунд', 'info');
+                    setTimeout(resetThreads, 5000);
+                }
+            }, 1000);
+        }
+        
+        // Сброс фильтров
+        function resetThreads() {
+            currentCategory = 'all';
+            currentPage = 1;
+            document.getElementById('category-filter').value = '';
+            loadThreads();
+        }
+        
+        // Сортировка тем
+        function sortThreads(sortBy) {
+            switch (sortBy) {
+                case 'newest':
+                    threads.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'popular':
+                    threads.sort((a, b) => (b.likes + b.replies) - (a.likes + a.replies));
+                    break;
+                case 'unanswered':
+                    // Фильтруем темы без ответов
+                    const unanswered = threads.filter(thread => thread.replies === 0);
+                    const answered = threads.filter(thread => thread.replies > 0);
+                    threads = [...unanswered, ...answered];
+                    break;
+                case 'solved':
+                    // В реальном приложении здесь будет фильтрация по решенным темам
+                    showMessage('Фильтр "Решенные" будет доступен в следующем обновлении', 'info');
+                    return;
+            }
+            
+            renderThreads();
+        }
+        
+        // Обновление статистики
+        function updateStats() {
+            // Обновляем общее количество тем
+            document.getElementById('total-threads').textContent = threads.length;
+            
+            // Обновляем количество пользователей
+            const uniqueUsers = [...new Set(threads.map(thread => thread.userId))];
+            document.getElementById('total-users').textContent = uniqueUsers.length;
+            
+            // Обновляем количество решенных проблем (демо)
+            document.getElementById('solved-threads').textContent = Math.floor(threads.length * 0.3);
+            
+            // Обновляем онлайн пользователей (демо)
+            document.getElementById('active-now').textContent = Math.floor(Math.random() * 50) + 10;
+        }
+        
+        // Обновление счетчиков категорий
+        function updateCategoryCounts() {
+            Object.keys(CONFIG.CATEGORIES).forEach(category => {
+                const count = threads.filter(thread => thread.category === category).length;
+                const element = document.getElementById(`category-${category}`);
+                if (element) {
+                    element.textContent = count;
+                }
+            });
+        }
+        
+        // Инициализация поиска
+        function initSearch() {
+            const searchInput = document.getElementById('forum-search');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch(this.value.trim());
+                }, 500);
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value.trim());
+                }
+            });
+        }
+        
+        // Выполнение поиска
+        function performSearch(query) {
+            if (!query) {
+                renderThreads();
+                return;
+            }
+            
+            const searchResults = threads.filter(thread => {
+                const searchLower = query.toLowerCase();
+                return (
+                    thread.title.toLowerCase().includes(searchLower) ||
+                    thread.content.toLowerCase().includes(searchLower) ||
+                    thread.userName.toLowerCase().includes(searchLower)
+                );
+            });
+            
+            // Временно показываем результаты поиска
+            const tempThreads = [...threads];
+            threads = searchResults;
+            currentCategory = 'search';
+            currentPage = 1;
+            renderThreads();
+            
+            // Добавляем информацию о поиске
+            const threadsList = document.getElementById('threads-list');
+            if (searchResults.length > 0) {
+                threadsList.innerHTML = `
+                    <div style="margin-bottom: 1.5rem;">
+                        <button class="action-btn secondary" onclick="resetThreads()">
+                            <i class="fas fa-arrow-left"></i> Вернуться ко всем темам
+                        </button>
+                        <span style="margin-left: 1rem; color: var(--text-light);">
+                            Найдено тем: ${searchResults.length}
+                        </span>
+                    </div>
+                    ${threadsList.innerHTML}
+                `;
+            }
+        }
+        
+        // Вспомогательные функции
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffMins < 1) return 'только что';
+            if (diffMins < 60) return `${diffMins} ${declension(diffMins, ['минуту', 'минуты', 'минут'])} назад`;
+            if (diffHours < 24) return `${diffHours} ${declension(diffHours, ['час', 'часа', 'часов'])} назад`;
+            if (diffDays < 7) return `${diffDays} ${declension(diffDays, ['день', 'дня', 'дней'])} назад`;
+            
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        function declension(number, titles) {
+            const cases = [2, 0, 1, 1, 1, 2];
+            return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substr(0, maxLength) + '...';
+        }
+        
+        function showMessage(text, type = 'info') {
+            const messageContainer = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                <i class="fas fa-${getMessageIcon(type)}"></i>
+                <span>${text}</span>
+            `;
+            
+            messageContainer.innerHTML = '';
+            messageContainer.appendChild(messageDiv);
+            
+            // Автоматическое скрытие
+            if (type !== 'error') {
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        if (messageDiv.parentNode) {
+                            messageDiv.parentNode.removeChild(messageDiv);
+                        }
+                    }, 300);
+                }, 5000);
+            }
+        }
+        
+        function getMessageIcon(type) {
+            switch (type) {
+                case 'success': return 'check-circle';
+                case 'error': return 'exclamation-circle';
+                case 'warning': return 'exclamation-triangle';
+                default: return 'info-circle';
+            }
+        }
+        
+        // Функции для кнопок действий
+        window.likeThread = function(threadId) {
+            const user = JSON.parse(localStorage.getItem('hegir_user'));
+            if (!user) {
+                showMessage('Для оценки темы необходимо войти в систему', 'warning');
+                return;
+            }
+            
+            // В реальном приложении здесь будет API запрос
+            showMessage('Функция оценки тем будет доступна в следующем обновлении', 'info');
+        };
+        
+        window.replyToThread = function(threadId) {
+            const user = JSON.parse(localStorage.getItem('hegir_user'));
+            if (!user) {
+                showMessage('Для ответа необходимо войти в систему', 'warning');
+                return;
+            }
+            
+            // В реальном приложении здесь будет открытие формы ответа
+            showMessage('Функция ответов будет доступна в следующем обновлении', 'info');
+        };
+        
+        window.shareThread = function(threadId) {
+            const threadUrl = `${window.location.origin}/thread.html?id=${threadId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'Посмотрите эту тему на форуме Hegir',
+                    url: threadUrl
+                });
+            } else {
+                // Копируем в буфер обмена
+                navigator.clipboard.writeText(threadUrl).then(() => {
+                    showMessage('Ссылка скопирована в буфер обмена', 'success');
+                });
+            }
+        };
+        
+        window.goToPage = goToPage;
+        window.resetThreads = resetThreads;
+    </script>
+</body>
+</html>
