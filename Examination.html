@@ -275,23 +275,23 @@
     </div>
 
     <script>
-        // База данных продуктов
+        // База данных продуктов - ИСПРАВЛЕНО
         const products = {
             "260202-01": {
                 title: "Hegir Phone 18+ Ultra",
                 description: "ЛЕГЕНДАРНЫЙ СМАРТФОН 2024-25 ГОДА!",
-                image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch?wid=5120&hei=2880&fmt=webp&qlt=70&.v=1663703841896",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
                 manufacturer: "Hegir Tehnologies",
                 country: "Россия",
                 warranty: "1 год"
             },
             "000000-00": {
-                title: "тест",
-                description: "ха",
-                image: "",
-                manufacturer: "ха.",
-                country: "ха",
-                warranty: "ха"
+                title: "Тестовый продукт",
+                description: "Это тестовый продукт для проверки работы системы.",
+                image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                manufacturer: "Тест",
+                country: "Тест",
+                warranty: "3 месяца"
             }
         };
 
@@ -326,6 +326,66 @@
             // Проверка формата
             if (!isValidCodeFormat(code)) {
                 resultMessage.innerHTML = '<i class="fas fa-exclamation-circle result-icon"></i> Неверный формат кода';
+                resultMessage.className = 'result invalid';
+                return;
+            }
+            
+            // Проверка наличия в базе
+            if (products[code]) {
+                resultMessage.innerHTML = '<i class="fas fa-check-circle result-icon"></i> Продукт является подлинным';
+                resultMessage.className = 'result valid';
+                showProductInfo(code);
+            } else {
+                resultMessage.innerHTML = '<i class="fas fa-times-circle result-icon"></i> Код не найден';
+                resultMessage.className = 'result invalid';
+            }
+        }
+
+        // Показать информацию о продукте
+        function showProductInfo(code) {
+            const product = products[code];
+            
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-code-display').textContent = `Код: ${code}`;
+            document.getElementById('product-description').textContent = product.description;
+            document.getElementById('product-img').src = product.image;
+            document.getElementById('manufacturer').textContent = product.manufacturer;
+            document.getElementById('country').textContent = product.country;
+            document.getElementById('warranty').textContent = product.warranty;
+            
+            // Показать карточку с анимацией
+            setTimeout(() => {
+                productCard.classList.add('show');
+            }, 300);
+        }
+
+        // Обработчики событий
+        checkBtn.addEventListener('click', checkProductCode);
+        
+        productCodeInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkProductCode();
+            }
+        });
+        
+        // Автоматическое добавление тире
+        productCodeInput.addEventListener('input', function() {
+            let value = this.value.replace(/[^\d]/g, '');
+            
+            if (value.length > 6) {
+                value = value.substring(0, 6) + '-' + value.substring(6, 8);
+            }
+            
+            this.value = value;
+        });
+        
+        // Фокус на поле ввода при загрузке
+        window.addEventListener('load', function() {
+            productCodeInput.focus();
+        });
+    </script>
+</body>
+</html></i> Неверный формат кода';
                 resultMessage.className = 'result invalid';
                 return;
             }
