@@ -1,6 +1,6 @@
 // Вставь свои данные из Supabase здесь
 const SUPABASE_URL = 'https://nwaxiktgnyauxnlioafm.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_h8m6nVHJV2p8Um8ch7HA8A_TlrXQ3YZ';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53YXhpa3RnbnlhdXhubGlvYWZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwODc5MjMsImV4cCI6MjA4NjY2MzkyM30.e4GkyXzeSVceyDFHHSF2do7gGZx5QAnG3wjR80qsn6c';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 class AuthManager {
