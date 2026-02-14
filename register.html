@@ -6,1046 +6,146 @@
     <title>Регистрация - Hegir</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg-dark: #0D0D0D;
             --text-white: #FFFFFF;
             --text-light: #E5E5E5;
             --accent-primary: #0066FF;
-            --accent-secondary: #00AAFF;
-            --accent-success: #00CC88;
-            --accent-danger: #FF4444;
             --card-bg: #1A1A1A;
             --transition: all 0.3s ease;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-light);
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
-        
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(13, 13, 13, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-white);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-        
-        .logo span {
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        
-        .header-actions a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .header-actions a:hover {
-            color: var(--accent-primary);
-        }
-        
-        /* Main Container */
-        .main-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 120px 5% 5%;
-        }
-        
+
         .register-container {
-            display: flex;
-            width: 100%;
-            max-width: 1000px;
             background: var(--card-bg);
+            padding: 2.5rem;
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            min-height: 600px;
-        }
-        
-        /* Left Side - Branding */
-        .register-branding {
-            flex: 1;
-            background: linear-gradient(135deg, rgba(0, 102, 255, 0.9), rgba(0, 170, 255, 0.7));
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .register-branding::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,0 L100,0 L100,100 Z" fill="white"/></svg>');
-            background-size: cover;
-        }
-        
-        .brand-logo {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-tagline {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-features {
-            list-style: none;
-            margin-top: 3rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-features li {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1.1rem;
-        }
-        
-        .brand-features i {
-            font-size: 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Right Side - Register Form */
-        .register-form-container {
-            flex: 1;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .form-header {
-            margin-bottom: 2.5rem;
-        }
-        
-        .form-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-        
-        .form-header p {
-            color: var(--text-light);
-            opacity: 0.7;
-        }
-        
-        /* Messages */
-        .message-container {
-            margin-bottom: 1.5rem;
-        }
-        
-        .message {
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .message.success {
-            background: rgba(0, 204, 136, 0.1);
-            border: 1px solid var(--accent-success);
-            color: var(--accent-success);
-        }
-        
-        .message.error {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid var(--accent-danger);
-            color: var(--accent-danger);
-        }
-        
-        .message.warning {
-            background: rgba(255, 149, 0, 0.1);
-            border: 1px solid #FF9500;
-            color: #FF9500;
-        }
-        
-        /* Form */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-            font-weight: 500;
-        }
-        
-        .form-input {
             width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: var(--text-white);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition);
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
+
+        h2 { margin-bottom: 1.5rem; text-align: center; color: var(--text-white); }
         
-        .form-input:focus {
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #111;
+            color: white;
             outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
         }
-        
-        .input-with-icon {
-            position: relative;
-        }
-        
-        .input-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-        }
-        
-        /* Password Requirements */
-        .password-requirements {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .requirements-title {
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-light);
-            opacity: 0.7;
-        }
-        
-        .requirement {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-        
-        .requirement.valid {
-            color: var(--accent-success);
-        }
-        
-        .requirement.invalid {
-            color: var(--text-light);
-            opacity: 0.5;
-        }
-        
-        /* Terms & Privacy */
-        .terms-privacy {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            cursor: pointer;
-        }
-        
-        .terms-privacy input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent-primary);
-        }
-        
-        .terms-privacy a {
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-        
-        .terms-privacy a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Buttons */
+
         .register-button {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            background: var(--accent-primary);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            margin-bottom: 1.5rem;
         }
+
+        .register-button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        #message-container { margin-top: 1rem; text-align: center; font-size: 0.9rem; }
+        .success { color: #00CC88; }
+        .error { color: #FF4444; }
         
-        .register-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
-        }
-        
-        .register-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        /* Login Link */
-        .login-link {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .login-link a {
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #080808;
-            padding: 2rem 5%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent-primary);
-        }
-        
-        /* Progress Bar */
-        .progress-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-        
-        .strength-text {
-            text-align: right;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: var(--text-light);
-            opacity: 0.7;
-        }
-        
-        /* Responsive */
-        @media (max-width: 900px) {
-            .register-container {
-                flex-direction: column;
-                max-width: 500px;
-            }
-            
-            .register-branding {
-                padding: 3rem 2rem;
-            }
-            
-            .register-form-container {
-                padding: 3rem 2rem;
-            }
-            
-            .brand-logo {
-                font-size: 2.5rem;
-            }
-            
-            .brand-tagline {
-                font-size: 1.2rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .main-container {
-                padding: 100px 3% 3%;
-            }
-            
-            .register-branding, .register-form-container {
-                padding: 2rem 1.5rem;
-            }
-            
-            .form-header h1 {
-                font-size: 2rem;
-            }
-            
-            .header-actions {
-                display: none;
-            }
-        }
+        .login-link { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; }
+        .login-link a { color: var(--accent-primary); text-decoration: none; }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <a href="index.html" class="logo">HEG<span>IR</span></a>
-        <div class="header-actions">
-            <a href="index.html">
-                <i class="fas fa-home"></i> Главная
-            </a>
-            <a href="forum.html">
-                <i class="fas fa-comments"></i> Форум
-            </a>
-            <a href="login.html">
-                <i class="fas fa-sign-in-alt"></i> Войти
-            </a>
-        </div>
-    </header>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <div class="register-container">
-            <!-- Left Side - Branding -->
-            <div class="register-branding">
-                <div class="brand-logo">Hegir ID</div>
-                <div class="brand-tagline">Присоединяйтесь к экосистеме</div>
-                
-                <ul class="brand-features">
-                    <li>
-                        <i class="fas fa-rocket"></i>
-                        <span>Мгновенный доступ ко всем продуктам Hegir</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Защита данных с квантовым шифрованием</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-sync-alt"></i>
-                        <span>Синхронизация между всеми устройствами</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-gift"></i>
-                        <span>Эксклюзивные предложения для участников</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Right Side - Register Form -->
-            <div class="register-form-container">
-                <div class="form-header">
-                    <h1>Создать аккаунт</h1>
-                    <p>Зарегистрируйтесь, чтобы получить доступ ко всем возможностям</p>
-                </div>
-                
-                <!-- Messages Container -->
-                <div class="message-container" id="message-container">
-                    <!-- Messages will be inserted here by JavaScript -->
-                </div>
-                
-                <!-- Register Form -->
-                <form id="register-form">
-                    <div class="form-group">
-                        <label for="name" class="form-label">Имя</label>
-                        <input type="text" id="name" class="form-input" placeholder="Иван" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email адрес</label>
-                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password" class="form-label">Пароль</label>
-                        <div class="input-with-icon">
-                            <input type="password" id="password" class="form-input" placeholder="••••••••" required minlength="6">
-                            <span class="input-icon" id="toggle-password">
-                                <i class="fas fa-eye"></i>
-                            </span>
-                        </div>
-                        
-                        <!-- Password Strength -->
-                        <div class="strength-text" id="strength-text">Слабый пароль</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="password-strength"></div>
-                        </div>
-                        
-                        <!-- Password Requirements -->
-                        <div class="password-requirements">
-                            <div class="requirements-title">Требования к паролю:</div>
-                            <div class="requirement invalid" id="req-length">
-                                <i class="fas fa-circle"></i>
-                                <span>Минимум 6 символов</span>
-                            </div>
-                            <div class="requirement invalid" id="req-uppercase">
-                                <i class="fas fa-circle"></i>
-                                <span>Хотя бы одна заглавная буква</span>
-                            </div>
-                            <div class="requirement invalid" id="req-number">
-                                <i class="fas fa-circle"></i>
-                                <span>Хотя бы одна цифра</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="confirm-password" class="form-label">Подтвердите пароль</label>
-                        <div class="input-with-icon">
-                            <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required>
-                            <span class="input-icon" id="toggle-confirm-password">
-                                <i class="fas fa-eye"></i>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="terms-privacy">
-                        <input type="checkbox" id="terms" required>
-                        <label for="terms">
-                            Я согласен с <a href="terms.html" target="_blank">Условиями использования</a> и <a href="privacy.html" target="_blank">Политикой конфиденциальности</a>
-                        </label>
-                    </div>
-                    
-                    <div class="terms-privacy">
-                        <input type="checkbox" id="newsletter" checked>
-                        <label for="newsletter">
-                            Получать новости о продуктах Hegir и специальные предложения
-                        </label>
-                    </div>
-                    
-                    <button type="submit" class="register-button" id="register-button">
-                        <i class="fas fa-user-plus"></i> Зарегистрироваться
-                    </button>
-                </form>
-                
-                <!-- Login Link -->
-                <div class="login-link">
-                    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
-                </div>
-            </div>
+    <div class="register-container">
+        <h2>Создать аккаунт</h2>
+        
+        <div class="form-group">
+            <label for="name">Имя пользователя</label>
+            <input type="text" id="name" placeholder="Arwintta">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" placeholder="example@mail.com">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+
+        <button class="register-button" onclick="handleRegister()">Зарегистрироваться</button>
+
+        <div id="message-container"></div>
+
+        <div class="login-link">
+            Уже есть аккаунт? <a href="login.html">Войти</a>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-links">
-            <a href="index.html">Главная</a>
-            <a href="forum.html">Форум</a>
-            <a href="privacy.html">Конфиденциальность</a>
-            <a href="terms.html">Условия</a>
-            <a href="support.html">Поддержка</a>
-        </div>
-        <p>© 2023 Hegir Technologies. Все права защищены.</p>
-        <p style="margin-top: 0.5rem; opacity: 0.7;">Единая экосистема. Бесшовный опыт.</p>
-    </footer>
-
     <script>
-        // Конфигурация
-        const CONFIG = {
-            // ВАЖНО: Замените этот URL на URL вашего Google Apps Script
-            GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxUIeT7tmBw7wSLLeWHGH1Maj34C22pzL3gJA5Mq44LKPzxFYE3w8h_PvAOFl0vPLpP/exec',
-            
-            // Сообщения
-            MESSAGES: {
-                REGISTER_SUCCESS: 'Регистрация успешна! Перенаправление...',
-                REGISTER_ERROR: 'Ошибка регистрации',
-                EMAIL_EXISTS: 'Пользователь с таким email уже существует',
-                PASSWORD_MISMATCH: 'Пароли не совпадают',
-                PASSWORD_WEAK: 'Пароль слишком слабый',
-                TERMS_REQUIRED: 'Необходимо принять условия использования',
-                CONNECTION_ERROR: 'Ошибка соединения. Проверьте интернет.',
-                VALIDATION_ERROR: 'Заполните все поля'
-            },
-            
-            // Перенаправление после успешной регистрации
-            REDIRECT_AFTER_REGISTER: 'index.html',
-            REDIRECT_DELAY: 1500
-        };
-        
-        // Основные функции
-        document.addEventListener('DOMContentLoaded', function() {
-            // Инициализируем компоненты
-            initComponents();
-            
-            // Обработка формы регистрации
-            initRegisterForm();
-            
-            // Проверка силы пароля
-            initPasswordStrength();
-        });
-        
-        // Инициализация компонентов
-        function initComponents() {
-            // Переключение видимости пароля
-            const togglePassword = document.getElementById('toggle-password');
-            const passwordInput = document.getElementById('password');
-            const toggleConfirm = document.getElementById('toggle-confirm-password');
-            const confirmInput = document.getElementById('confirm-password');
-            
-            togglePassword.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-            });
-            
-            toggleConfirm.addEventListener('click', function() {
-                const type = confirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                confirmInput.setAttribute('type', type);
-                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-            });
-        }
-        
-        // Инициализация проверки силы пароля
-        function initPasswordStrength() {
-            const passwordInput = document.getElementById('password');
-            const strengthBar = document.getElementById('password-strength');
-            const strengthText = document.getElementById('strength-text');
-            
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                const strength = calculatePasswordStrength(password);
-                
-                // Обновляем прогресс бар
-                strengthBar.style.width = strength.percentage + '%';
-                
-                // Обновляем текст
-                strengthText.textContent = strength.text;
-                strengthText.style.color = getStrengthColor(strength.level);
-                
-                // Обновляем требования
-                updateRequirements(password);
-            });
-        }
-        
-        // Расчет силы пароля
-        function calculatePasswordStrength(password) {
-            let score = 0;
-            let text = 'Очень слабый';
-            let level = 0;
-            let percentage = 0;
-            
-            if (!password) {
-                return { text, level, percentage };
+        // --- НАСТРОЙКИ SUPABASE ---
+        // Замени на свои данные из Settings -> API в панели Supabase
+        const SUPABASE_URL = 'https://your-project-url.supabase.co';
+        const SUPABASE_KEY = 'your-anon-key';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function handleRegister() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msgContainer = document.getElementById('message-container');
+
+            if (!name || !email || !password) {
+                showMsg('Заполните все поля!', 'error');
+                return;
             }
-            
-            // Проверка длины
-            if (password.length >= 6) score++;
-            if (password.length >= 8) score++;
-            if (password.length >= 12) score++;
-            
-            // Проверка на заглавные буквы
-            if (/[A-Z]/.test(password)) score++;
-            
-            // Проверка на строчные буквы
-            if (/[a-z]/.test(password)) score++;
-            
-            // Проверка на цифры
-            if (/\d/.test(password)) score++;
-            
-            // Проверка на специальные символы
-            if (/[^A-Za-z0-9]/.test(password)) score++;
-            
-            // Определяем уровень силы
-            if (score <= 2) {
-                text = 'Слабый';
-                level = 1;
-                percentage = 25;
-            } else if (score <= 4) {
-                text = 'Средний';
-                level = 2;
-                percentage = 50;
-            } else if (score <= 6) {
-                text = 'Хороший';
-                level = 3;
-                percentage = 75;
-            } else {
-                text = 'Отличный';
-                level = 4;
-                percentage = 100;
-            }
-            
-            return { text, level, percentage };
-        }
-        
-        // Получение цвета для индикатора силы
-        function getStrengthColor(level) {
-            switch(level) {
-                case 0: return '#FF4444';
-                case 1: return '#FF9500';
-                case 2: return '#FFCC00';
-                case 3: return '#00CC88';
-                case 4: return '#0066FF';
-                default: return '#FFFFFF';
-            }
-        }
-        
-        // Обновление требований к паролю
-        function updateRequirements(password) {
-            // Длина
-            const lengthReq = document.getElementById('req-length');
-            if (password.length >= 6) {
-                lengthReq.classList.remove('invalid');
-                lengthReq.classList.add('valid');
-                lengthReq.innerHTML = '<i class="fas fa-check-circle"></i><span>Минимум 6 символов ✓</span>';
-            } else {
-                lengthReq.classList.remove('valid');
-                lengthReq.classList.add('invalid');
-                lengthReq.innerHTML = '<i class="fas fa-circle"></i><span>Минимум 6 символов</span>';
-            }
-            
-            // Заглавные буквы
-            const upperReq = document.getElementById('req-uppercase');
-            if (/[A-Z]/.test(password)) {
-                upperReq.classList.remove('invalid');
-                upperReq.classList.add('valid');
-                upperReq.innerHTML = '<i class="fas fa-check-circle"></i><span>Хотя бы одна заглавная буква ✓</span>';
-            } else {
-                upperReq.classList.remove('valid');
-                upperReq.classList.add('invalid');
-                upperReq.innerHTML = '<i class="fas fa-circle"></i><span>Хотя бы одна заглавная буква</span>';
-            }
-            
-            // Цифры
-            const numberReq = document.getElementById('req-number');
-            if (/\d/.test(password)) {
-                numberReq.classList.remove('invalid');
-                numberReq.classList.add('valid');
-                numberReq.innerHTML = '<i class="fas fa-check-circle"></i><span>Хотя бы одна цифра ✓</span>';
-            } else {
-                numberReq.classList.remove('valid');
-                numberReq.classList.add('invalid');
-                numberReq.innerHTML = '<i class="fas fa-circle"></i><span>Хотя бы одна цифра</span>';
-            }
-        }
-        
-        // Инициализация формы регистрации
-        function initRegisterForm() {
-            const registerForm = document.getElementById('register-form');
-            const registerButton = document.getElementById('register-button');
-            
-            registerForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Получаем данные формы
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const confirmPassword = document.getElementById('confirm-password').value.trim();
-                const termsAccepted = document.getElementById('terms').checked;
-                const newsletter = document.getElementById('newsletter').checked;
-                
-                // Валидация
-                const validation = validateForm(name, email, password, confirmPassword, termsAccepted);
-                if (!validation.isValid) {
-                    showMessage(validation.message, 'error');
-                    return;
-                }
-                
-                // Показываем состояние загрузки
-                setLoadingState(true);
-                
-                try {
-                    // Отправляем запрос на регистрацию
-                    const response = await registerUser(name, email, password, newsletter);
-                    
-                    if (response.success) {
-                        // Успешная регистрация
-                        handleSuccessfulRegistration(response.user);
-                    } else {
-                        // Ошибка регистрации
-                        showMessage(response.message || CONFIG.MESSAGES.REGISTER_ERROR, 'error');
-                    }
-                } catch (error) {
-                    console.error('Register error:', error);
-                    showMessage(CONFIG.MESSAGES.CONNECTION_ERROR, 'error');
-                } finally {
-                    // Сбрасываем состояние загрузки
-                    setLoadingState(false);
-                }
-            });
-            
-            // Валидация формы
-            function validateForm(name, email, password, confirmPassword, termsAccepted) {
-                // Проверяем имя
-                if (!name) {
-                    return { isValid: false, message: 'Введите имя и фамилию' };
-                }
-                
-                // Проверяем email
-                if (!email) {
-                    return { isValid: false, message: 'Введите email адрес' };
-                }
-                
-                if (!isValidEmail(email)) {
-                    return { isValid: false, message: 'Введите корректный email адрес' };
-                }
-                
-                // Проверяем пароль
-                if (!password) {
-                    return { isValid: false, message: 'Введите пароль' };
-                }
-                
-                if (password.length < 6) {
-                    return { isValid: false, message: 'Пароль должен быть не менее 6 символов' };
-                }
-                
-                // Проверяем подтверждение пароля
-                if (!confirmPassword) {
-                    return { isValid: false, message: 'Подтвердите пароль' };
-                }
-                
-                if (password !== confirmPassword) {
-                    return { isValid: false, message: CONFIG.MESSAGES.PASSWORD_MISMATCH };
-                }
-                
-                // Проверяем условия
-                if (!termsAccepted) {
-                    return { isValid: false, message: CONFIG.MESSAGES.TERMS_REQUIRED };
-                }
-                
-                return { isValid: true, message: '' };
-            }
-            
-            // Установка состояния загрузки
-            function setLoadingState(isLoading) {
-                if (isLoading) {
-                    registerButton.disabled = true;
-                    registerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
-                } else {
-                    registerButton.disabled = false;
-                    registerButton.innerHTML = '<i class="fas fa-user-plus"></i> Зарегистрироваться';
-                }
-            }
-        }
-        
-        // Регистрация пользователя
-        async function registerUser(name, email, password, newsletter) {
-            // Имитация задержки сети
-            await simulateNetworkDelay();
-            
-            // Пытаемся зарегистрировать через Google Apps Script
-            try {
-                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=register&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-                });
-                
-                return await response.json();
-            } catch (error) {
-                // Если скрипт не доступен, используем локальную имитацию
-                console.warn('Google Script not available, using mock registration');
-                return mockRegistration(name, email, password);
-            }
-        }
-        
-        // Имитация задержки сети
-        function simulateNetworkDelay() {
-            return new Promise(resolve => setTimeout(resolve, 800));
-        }
-        
-        // Локальная имитация регистрации (для демо)
-        function mockRegistration(name, email, password) {
-            // В реальном приложении здесь будет обращение к Google Apps Script
-            // Для демо используем проверку существующих пользователей
-            const existingUsers = JSON.parse(localStorage.getItem('hegir_users') || '[]');
-            
-            // Проверяем, существует ли пользователь
-            if (existingUsers.some(user => user.email === email)) {
-                return {
-                    success: false,
-                    message: CONFIG.MESSAGES.EMAIL_EXISTS
-                };
-            }
-            
-            // Создаем нового пользователя
-            const newUser = {
-                id: 'user-' + Date.now(),
-                name: name,
+
+            showMsg('Регистрация...', '');
+
+            const { data, error } = await _supabase.auth.signUp({
                 email: email,
-                role: 'user',
-                registered: new Date().toISOString()
-            };
-            
-            // Сохраняем пользователя
-            existingUsers.push(newUser);
-            localStorage.setItem('hegir_users', JSON.stringify(existingUsers));
-            
-            // Сохраняем данные для входа
-            localStorage.setItem('hegir_user', JSON.stringify(newUser));
-            localStorage.setItem('hegir_session', JSON.stringify({
-                token: 'demo-token-' + Date.now(),
-                expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-            }));
-            
-            return {
-                success: true,
-                message: CONFIG.MESSAGES.REGISTER_SUCCESS,
-                user: newUser
-            };
-        }
-        
-        // Обработка успешной регистрации
-        function handleSuccessfulRegistration(user) {
-            // Сохраняем данные пользователя
-            const userData = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role || 'user',
-                registered: new Date().toISOString()
-            };
-            
-            localStorage.setItem('hegir_user', JSON.stringify(userData));
-            
-            // Показываем сообщение об успехе
-            showMessage(CONFIG.MESSAGES.REGISTER_SUCCESS, 'success');
-            
-            // Перенаправляем после задержки
-            setTimeout(() => {
-                window.location.href = CONFIG.REDIRECT_AFTER_REGISTER;
-            }, CONFIG.REDIRECT_DELAY);
-        }
-        
-        // Вспомогательные функции
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-        
-        function showMessage(text, type = 'info') {
-            const messageContainer = document.getElementById('message-container');
-            
-            // Создаем элемент сообщения
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.innerHTML = `
-                <i class="fas fa-${getMessageIcon(type)}"></i>
-                <span>${text}</span>
-            `;
-            
-            // Очищаем предыдущие сообщения
-            messageContainer.innerHTML = '';
-            
-            // Добавляем новое сообщение
-            messageContainer.appendChild(messageDiv);
-            
-            // Автоматическое скрытие для success/warning сообщений
-            if (type === 'success' || type === 'warning') {
-                setTimeout(() => {
-                    messageDiv.style.opacity = '0';
-                    setTimeout(() => {
-                        if (messageDiv.parentNode) {
-                            messageDiv.parentNode.removeChild(messageDiv);
-                        }
-                    }, 300);
-                }, 5000);
+                password: password,
+                options: {
+                    data: { display_name: name }
+                }
+            });
+
+            if (error) {
+                showMsg('Ошибка: ' + error.message, 'error');
+            } else {
+                showMsg('Успех! Проверьте почту для подтверждения.', 'success');
+                // Сохраняем имя в локальное хранилище для форума
+                localStorage.setItem('hegir_user', JSON.stringify({ name: name, email: email }));
+                setTimeout(() => { window.location.href = 'index.html'; }, 3000);
             }
         }
-        
-        function getMessageIcon(type) {
-            switch (type) {
-                case 'success': return 'check-circle';
-                case 'error': return 'exclamation-circle';
-                case 'warning': return 'exclamation-triangle';
-                default: return 'info-circle';
-            }
+
+        function showMsg(text, type) {
+            const container = document.getElementById('message-container');
+            container.textContent = text;
+            container.className = type;
         }
-        
-        // Экспорт функций для глобального использования
-        window.registerUser = registerUser;
-        window.showMessage = showMessage;
     </script>
 </body>
 </html>
