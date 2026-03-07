@@ -2,14 +2,14 @@ async function loadProducts() {
     const products = [
         // вставьте сюда несколько объектов из вашего JSON, например первый телефон
         {
-    "segment": "Видеокарта",
-    "memory": "24 GB GDDR7",
-    "bus": "384-bit",
-    "pcie": "PCIe 5.0",
-    "shortDesc": "24 ГБ GDDR7, 384 бит",
-    "fullDesc": "Флагманская видеокарта для профессионалов и энтузиастов.",
-    "price": "129 990 ₽",
-    "image": "nexus90.jpg"
-  }
-]
-      
+            "id": "phone1",
+            "name": "Hegir Phone 1",
+            "category": "phone",
+            "shortDesc": "6.1″ OLED, чип PH3-320K",
+            "fullDesc": "Смартфон начального уровня...",
+            "price": "39 990 ₽",
+            "image": "phone1.jpg"
+        }
+    ];
+    renderCatalog(products);
+}
