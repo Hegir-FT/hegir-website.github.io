@@ -1,6 +1,5 @@
 async function loadProducts() {
     const products = [
-        // вставьте сюда несколько объектов из вашего JSON, например первый телефон
         {
             "id": "phone1",
             "name": "Hegir Phone 1",
